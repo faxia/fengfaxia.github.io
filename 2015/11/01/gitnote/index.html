@@ -11,22 +11,22 @@
     
 
     
-    <meta name="description" content="1.Git的三个区
+    <meta name="description" content="###1.Git的三个区
 工作区暂存区   —作为过渡层   —避免误操作   —保护工作区和版本区   —分支处理
-版本区（库）  git status  / /查看当前状态git add    //工作区向暂存区添加文本文件    — name   //后跟添加指定文件    — .      //一次添加完git commit  //从暂存区添加到版本区     —   -m  //后面跟版本">
+版本区（库）  git status  / /查看当前状态git add    //工作区向暂存区添加文本文件    — name   //后跟添加指定文件    — .      //一次添加完git commit  //从暂存区添加到版本区     —   -m  //后面">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GitNote">
 <meta property="og:url" content="http://yoursite.com/2015/11/01/gitnote/index.html">
 <meta property="og:site_name" content="fengfaxia">
-<meta property="og:description" content="1.Git的三个区
+<meta property="og:description" content="###1.Git的三个区
 工作区暂存区   —作为过渡层   —避免误操作   —保护工作区和版本区   —分支处理
-版本区（库）  git status  / /查看当前状态git add    //工作区向暂存区添加文本文件    — name   //后跟添加指定文件    — .      //一次添加完git commit  //从暂存区添加到版本区     —   -m  //后面跟版本">
-<meta property="og:updated_time" content="2015-11-01T10:13:33.614Z">
+版本区（库）  git status  / /查看当前状态git add    //工作区向暂存区添加文本文件    — name   //后跟添加指定文件    — .      //一次添加完git commit  //从暂存区添加到版本区     —   -m  //后面">
+<meta property="og:updated_time" content="2015-11-01T10:16:26.387Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="GitNote">
-<meta name="twitter:description" content="1.Git的三个区
+<meta name="twitter:description" content="###1.Git的三个区
 工作区暂存区   —作为过渡层   —避免误操作   —保护工作区和版本区   —分支处理
-版本区（库）  git status  / /查看当前状态git add    //工作区向暂存区添加文本文件    — name   //后跟添加指定文件    — .      //一次添加完git commit  //从暂存区添加到版本区     —   -m  //后面跟版本">
+版本区（库）  git status  / /查看当前状态git add    //工作区向暂存区添加文本文件    — name   //后跟添加指定文件    — .      //一次添加完git commit  //从暂存区添加到版本区     —   -m  //后面">
 
     
     <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
@@ -93,7 +93,7 @@
 		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
 		
   <p class="article-time">
-    <time datetime="2015-11-01T10:13:33.614Z" itemprop="datePublished"> 发表于 2015-11-01</time>
+    <time datetime="2015-11-01T10:16:26.387Z" itemprop="datePublished"> 发表于 2015-11-01</time>
     
   </p>
 </header>
@@ -102,20 +102,22 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#工作区"><span class="toc-number">1.</span> <span class="toc-text">工作区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#暂存区"><span class="toc-number">2.</span> <span class="toc-text">暂存区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#版本区（库）"><span class="toc-number">3.</span> <span class="toc-text">版本区（库）</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#工作区"><span class="toc-number">1.</span> <span class="toc-text">工作区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#暂存区"><span class="toc-number">2.</span> <span class="toc-text">暂存区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#版本区（库）"><span class="toc-number">3.</span> <span class="toc-text">版本区（库）</span></a></li></ol>
 		
 		</div>
 		
-		<p>1.Git的三个区</p>
-<h3 id="工作区">工作区</h3><h3 id="暂存区">暂存区</h3><p>   —作为过渡层<br>   —避免误操作<br>   —保护工作区和版本区<br>   —分支处理</p>
-<h3 id="版本区（库）">版本区（库）</h3><p>  git status  / /查看当前状态<br>git add    //工作区向暂存区添加文本文件<br>    — name   //后跟添加指定文件<br>    — .      //一次添加完<br>git commit  //从暂存区添加到版本区<br>     —   -m  //后面跟版本的注释<br>     —  -a -m  //add命令和commit命令一起执行<br>2.对比<br>    — git diff   //对比工作区和暂存区<br>    — git diff –cached(–staged)   //对比暂存区和版本区<br>    — git diff master  //对比工作区和版本区域<br>3.撤销<br>    — git reset HEAD <file.name> //从暂存区撤销到工作区<br>    — git checkout – <file.name> //撤销工作区的修改到暂存区或版本区的状态，比如.html文件修改了，通过该命令，可以将工作区撤销到版本区的.html状态<br>    — git commit –amend //对提交从新操作，即进行新的提交方案</file.name></file.name></p>
-<p>4.删除<br>    — git rm <file.name>  //rm是remove的缩写，工作区人工删除，需要把暂存区的也删掉，执行该命令达到工作区和暂存区同步<br>    — git rm - -f <file.name>  //工作区暂存区的文件都删除(前提两个区都有该文件)<br>    — git rm –cached <file.name>  //只会删除暂存区文件</file.name></file.name></file.name></p>
-<p>5.恢复<br> git checkout commit_id <file.name>  //其中commit_id需恢复版本Id，可以不用取完，恢复对应版本指定文件<br> git reset –hard commit_id // 恢复整个版本，即多个文件<br>    —  HEAD^  //HEAD 代表一个指针，指向当前版本版本，“^”代表回到过去的一个版本<br>    — HEAD~<num>  //一次性回到过去几个版本<br>  git reflog  //查找版本，再通过git reset –hard commit_id命令恢复将来想要的版本</num></file.name></p>
-<p>6.同步到远程仓库<br> git remote   //查看远程仓库<br>        — -v  //远程操作的项目名字<br>        — origin  //默认的远程操作的名字<br>  git push origin master  //本地推送到远程仓库</p>
-<p>7.多人协作解决冲突<br>      git fetch   //拉去远程仓库，但并不和本地合并<br>        — Git diff master origin/master  //查看本地区和版本区的区别，<br>       — Git merge  orgin/master   //有冲突就合并<br>    git pull     //拉去远程仓库，并且和本地合并，方法较差些</p>
-<p>8.开源项目协作（没有权限的操作）以下两个是在github上操作<br>fork //开了一个分支或者说克隆了一个版本到当前项目下，相当于通信通道<br>pull request //给有权限的人发送一个请求，说明修改了文档。如果有权限的人仍可了就合并</p>
-<p>9.Git分支<br> git branch //查看分支<br>     git brach &lt;分支&gt; //创建分支<br>— -d   //删除当前分支下的分支<br>— -D  //强制删除不在当前分支下的分支<br>— –merged   //查看和当前分支合并的分支信息<br>— –no-merged  //查看和当前分支合并的分支信息<br> git checkout  //检出<br>— -b  //检出到新分支,-b是branch的简写<br> git merge //合并分支</p>
-<p>10.github上的分支<br>— git push      //git push origin &lt;分支&gt; 意思提交分支到远程仓库<br>— github上直接创建</p>
+		<p>###1.Git的三个区</p>
+<h4 id="工作区">工作区</h4><h4 id="暂存区">暂存区</h4><p>   —作为过渡层<br>   —避免误操作<br>   —保护工作区和版本区<br>   —分支处理</p>
+<h4 id="版本区（库）">版本区（库）</h4><p>  git status  / /查看当前状态<br>git add    //工作区向暂存区添加文本文件<br>    — name   //后跟添加指定文件<br>    — .      //一次添加完<br>git commit  //从暂存区添加到版本区<br>     —   -m  //后面跟版本的注释<br>     —  -a -m  //add命令和commit命令一起执行</p>
+<p>###2.对比<br>    — git diff   //对比工作区和暂存区<br>    — git diff –cached(–staged)   //对比暂存区和版本区<br>    — git diff master  //对比工作区和版本区域</p>
+<p>###3.撤销<br>    — git reset HEAD <file.name> //从暂存区撤销到工作区<br>    — git checkout – <file.name> //撤销工作区的修改到暂存区或版本区的状态，比如.html文件修改了，通过该命令，可以将工作区撤销到版本区的.html状态<br>    — git commit –amend //对提交从新操作，即进行新的提交方案</file.name></file.name></p>
+<p>###4.删除<br>    — git rm <file.name>  //rm是remove的缩写，工作区人工删除，需要把暂存区的也删掉，执行该命令达到工作区和暂存区同步<br>    — git rm - -f <file.name>  //工作区暂存区的文件都删除(前提两个区都有该文件)<br>    — git rm –cached <file.name>  //只会删除暂存区文件</file.name></file.name></file.name></p>
+<p>###5.恢复<br> git checkout commit_id <file.name>  //其中commit_id需恢复版本Id，可以不用取完，恢复对应版本指定文件<br> git reset –hard commit_id // 恢复整个版本，即多个文件<br>    —  HEAD^  //HEAD 代表一个指针，指向当前版本版本，“^”代表回到过去的一个版本<br>    — HEAD~<num>  //一次性回到过去几个版本<br>  git reflog  //查找版本，再通过git reset –hard commit_id命令恢复将来想要的版本</num></file.name></p>
+<p>###6.同步到远程仓库<br> git remote   //查看远程仓库<br>        — -v  //远程操作的项目名字<br>        — origin  //默认的远程操作的名字<br>  git push origin master  //本地推送到远程仓库</p>
+<p>###7.多人协作解决冲突<br>      git fetch   //拉去远程仓库，但并不和本地合并<br>        — Git diff master origin/master  //查看本地区和版本区的区别，<br>       — Git merge  orgin/master   //有冲突就合并<br>    git pull     //拉去远程仓库，并且和本地合并，方法较差些</p>
+<p>###8.开源项目协作（没有权限的操作）以下两个是在github上操作<br>fork //开了一个分支或者说克隆了一个版本到当前项目下，相当于通信通道<br>pull request //给有权限的人发送一个请求，说明修改了文档。如果有权限的人仍可了就合并</p>
+<p>###9.Git分支<br> git branch //查看分支<br>     git brach &lt;分支&gt; //创建分支<br>— -d   //删除当前分支下的分支<br>— -D  //强制删除不在当前分支下的分支<br>— –merged   //查看和当前分支合并的分支信息<br>— –no-merged  //查看和当前分支合并的分支信息<br> git checkout  //检出<br>— -b  //检出到新分支,-b是branch的简写<br> git merge //合并分支</p>
+<p>###10.github上的分支<br>— git push      //git push origin &lt;分支&gt; 意思提交分支到远程仓库<br>— github上直接创建</p>
 <p>github上的标签<br>— git tag<br>— github上直接创建</p>
   
 	</div>
@@ -161,7 +163,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#工作区"><span class="toc-number">1.</span> <span class="toc-text">工作区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#暂存区"><span class="toc-number">2.</span> <span class="toc-text">暂存区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#版本区（库）"><span class="toc-number">3.</span> <span class="toc-text">版本区（库）</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#工作区"><span class="toc-number">1.</span> <span class="toc-text">工作区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#暂存区"><span class="toc-number">2.</span> <span class="toc-text">暂存区</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#版本区（库）"><span class="toc-number">3.</span> <span class="toc-text">版本区（库）</span></a></li></ol>
  
   </div>
 
