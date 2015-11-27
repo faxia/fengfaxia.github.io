@@ -1,0 +1,526 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>GitNote | fengfaxia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="fengfaxia">
+    
+
+    
+    <meta name="description" content="git工作区以及常用命令">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitNote">
+<meta property="og:url" content="http://yoursite.com/2015/11/27/gitnote/index.html">
+<meta property="og:site_name" content="fengfaxia">
+<meta property="og:description" content="git工作区以及常用命令">
+<meta property="og:updated_time" content="2015-11-27T12:51:27.601Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GitNote">
+<meta name="twitter:description" content="git工作区以及常用命令">
+
+    
+    <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="fengfaxia" title="fengfaxia"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="fengfaxia">fengfaxia</a></h1>
+				<h2 class="blog-motto">拥抱变化</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home | 主页</a></li>
+					
+						<li><a href="/archives">Archives | 文章</a></li>
+					
+						<li><a href="/about">About | 关于我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/11/27/gitnote/" title="GitNote" itemprop="url">GitNote</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
+		
+  <p class="article-time">
+    <time datetime="2015-11-27T12:51:27.601Z" itemprop="datePublished"> 发表于 2015-11-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Git的三个区"><span class="toc-number">1.</span> <span class="toc-text">Git的三个区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git命令"><span class="toc-number">2.</span> <span class="toc-text">Git命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-查看添加"><span class="toc-number">2.1.</span> <span class="toc-text">1.查看添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-对比"><span class="toc-number">2.2.</span> <span class="toc-text">2.对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-撤销"><span class="toc-number">2.3.</span> <span class="toc-text">3.撤销</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-删除"><span class="toc-number">2.4.</span> <span class="toc-text">4.删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-恢复"><span class="toc-number">2.5.</span> <span class="toc-text">5.恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-同步到远程仓库"><span class="toc-number">2.6.</span> <span class="toc-text">6.同步到远程仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-多人协作解决冲突"><span class="toc-number">2.7.</span> <span class="toc-text">7.多人协作解决冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-开源项目协作（没有权限的操作）以下两个是在github上操作"><span class="toc-number">2.8.</span> <span class="toc-text">8.开源项目协作（没有权限的操作）以下两个是在github上操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-Git分支"><span class="toc-number">2.9.</span> <span class="toc-text">9.Git分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-github上的分支"><span class="toc-number">2.10.</span> <span class="toc-text">10.github上的分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-github上的标签"><span class="toc-number">2.11.</span> <span class="toc-text">11.github上的标签</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p>git工作区以及常用命令</p>
+</blockquote>
+ <a id="more"></a>
+<h2 id="Git的三个区">Git的三个区</h2><pre><code><span class="bullet">. </span>工作区
+<span class="bullet">. </span>暂存区
+<span class="code">   —作为过渡层</span>
+<span class="code">   —避免误操作</span>
+<span class="code">   —保护工作区和版本区</span>
+<span class="code">   —分支处理</span>
+<span class="bullet">. </span>版本区（库）
+</code></pre><h2 id="Git命令">Git命令</h2><h3 id="1-查看添加">1.查看添加</h3><pre><code>— git status  / /查看当前状态
+— git <span class="built_in">add</span>   <span class="comment"> //工作区向暂存区添加文本文件</span>
+    — name  <span class="comment"> //后跟添加指定文件</span>
+    — .     <span class="comment"> //一次添加完</span>
+— git commit <span class="comment"> //从暂存区添加到版本区</span>
+    —   -m <span class="comment"> //后面跟版本的注释</span>
+    —  -<span class="operator">a</span> -m <span class="comment"> //add命令和commit命令一起执行</span>
+</code></pre><h3 id="2-对比">2.对比</h3><pre><code>— git diff   <span class="comment">//对比工作区和暂存区</span>
+— git diff --<span class="function"><span class="title">cached</span><span class="params">(--staged)</span></span>   <span class="comment">//对比暂存区和版本区   </span>
+— git diff master  <span class="comment">//对比工作区和版本区域</span>
+</code></pre><h3 id="3-撤销">3.撤销</h3><pre><code>— git <span class="operator"><span class="keyword">reset</span> <span class="keyword">HEAD</span> &lt;<span class="keyword">file</span>.<span class="keyword">name</span>&gt; //从暂存区撤销到工作区
+— git checkout <span class="comment">-- &lt;file.name&gt; //撤销工作区的修改到暂存区或版本区的状态，</span>
+比如.html文件修改了，
+<span class="comment">---通过该命令，可以将工作区撤销到版本区的.html状态</span>
+— git <span class="keyword">commit</span> <span class="comment">--amend //对提交从新操作，即进行新的提交方案</span></span>
+</code></pre><h3 id="4-删除">4.删除</h3><pre><code>— git <span class="keyword">rm</span> &lt;<span class="keyword">file</span>.name&gt;  <span class="comment">//rm是remove的缩写，工作区人工删除，需要把暂存区的也删掉，执行该命令达到工作区和暂存区同步</span>
+— git <span class="keyword">rm</span> - -f &lt;<span class="keyword">file</span>.name&gt;  <span class="comment">//工作区暂存区的文件都删除(前提两个区都有该文件)</span>
+— git <span class="keyword">rm</span> --cached &lt;<span class="keyword">file</span>.name&gt;  <span class="comment">//只会删除暂存区文件</span>
+</code></pre><h3 id="5-恢复">5.恢复</h3><pre><code>— git checkout commit_id &lt;<span class="built_in">file</span>.name&gt; <span class="comment"> //其中commit_id需恢复版本Id，可以不用取完，恢复对应版本指定文件</span>
+— git reset <span class="comment">--hard commit_id // 恢复整个版本，即多个文件</span>
+  —  HEAD^ <span class="comment"> //HEAD 代表一个指针，指向当前版本版本，“^”代表回到过去的一个版本</span>
+  — HEAD~&lt;<span class="built_in">num</span>&gt; <span class="comment"> //一次性回到过去几个版本</span>
+—  git reflog <span class="comment"> //查找版本，再通过git reset --hard commit_id命令恢复将来想要的版本</span>
+</code></pre><h3 id="6-同步到远程仓库">6.同步到远程仓库</h3><pre><code>— git remote    <span class="comment">//查看远程仓库</span>
+     — -v   <span class="comment">//远程操作的项目名字</span>
+     — origin   <span class="comment">//默认的远程操作的名字</span>
+— git <span class="keyword">push</span> origin master  <span class="comment">//本地推送到远程仓库</span>
+</code></pre><h3 id="7-多人协作解决冲突">7.多人协作解决冲突</h3><pre><code> — git fetch    //拉去远程仓库，但并不和本地合并
+   — Git diff <span class="keyword">master</span> <span class="title">origin</span>/<span class="keyword">master</span>  <span class="title">//查看本地区和版本区的区别，
+  — Git</span> merge  orgin/<span class="keyword">master</span>   <span class="title">//有冲突就合并
+— git</span> pull     //拉去远程仓库，并且和本地合并，方法较差些
+</code></pre><h3 id="8-开源项目协作（没有权限的操作）以下两个是在github上操作">8.开源项目协作（没有权限的操作）以下两个是在github上操作</h3><pre><code>— <span class="keyword">fork</span> <span class="comment">//开了一个分支或者说克隆了一个版本到当前项目下，相当于通信通道</span>
+— pull request <span class="comment">//给有权限的人发送一个请求，说明修改了文档。</span>
+如果有权限的人仍可了就合并
+</code></pre><h3 id="9-Git分支">9.Git分支</h3><pre><code>— git branch <span class="comment">//查看分支</span>
+—  git brach &lt;分支&gt; <span class="comment">//创建分支 </span>
+  — -<span class="keyword">d</span>   <span class="comment">//删除当前分支下的分支</span>
+  — -<span class="keyword">D</span>  <span class="comment">//强制删除不在当前分支下的分支</span>
+  — --merged   <span class="comment">//查看和当前分支合并的分支信息</span>
+  — --<span class="keyword">no</span>-merged  <span class="comment">//查看和当前分支合并的分支信息</span>
+— git checkout  <span class="comment">//检出</span>
+  — -b  <span class="comment">//检出到新分支,-b是branch的简写</span>
+— git <span class="keyword">merge</span> <span class="comment">//合并分支</span>
+</code></pre><h3 id="10-github上的分支">10.github上的分支</h3><pre><code>— git <span class="keyword">push </span>     //git <span class="keyword">push </span>origin &lt;分支&gt; 意思提交分支到远程仓库
+— github上直接创建
+</code></pre><h3 id="11-github上的标签">11.github上的标签</h3><pre><code>— git <span class="keyword">tag</span>
+<span class="title">— github</span>上直接创建
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Git/">Git</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2015/11/27/gitnote/" data-title="GitNote | fengfaxia" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/11/27/tween算法及应用/"  title="tween算法及应用——原生时间版运动">
+ <strong>下一篇：</strong><br/> 
+ <span>tween算法及应用——原生时间版运动
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Git的三个区"><span class="toc-number">1.</span> <span class="toc-text">Git的三个区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Git命令"><span class="toc-number">2.</span> <span class="toc-text">Git命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-查看添加"><span class="toc-number">2.1.</span> <span class="toc-text">1.查看添加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-对比"><span class="toc-number">2.2.</span> <span class="toc-text">2.对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-撤销"><span class="toc-number">2.3.</span> <span class="toc-text">3.撤销</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-删除"><span class="toc-number">2.4.</span> <span class="toc-text">4.删除</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-恢复"><span class="toc-number">2.5.</span> <span class="toc-text">5.恢复</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-同步到远程仓库"><span class="toc-number">2.6.</span> <span class="toc-text">6.同步到远程仓库</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-多人协作解决冲突"><span class="toc-number">2.7.</span> <span class="toc-text">7.多人协作解决冲突</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-开源项目协作（没有权限的操作）以下两个是在github上操作"><span class="toc-number">2.8.</span> <span class="toc-text">8.开源项目协作（没有权限的操作）以下两个是在github上操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#9-Git分支"><span class="toc-number">2.9.</span> <span class="toc-text">9.Git分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#10-github上的分支"><span class="toc-number">2.10.</span> <span class="toc-text">10.github上的分支</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#11-github上的标签"><span class="toc-number">2.11.</span> <span class="toc-text">11.github上的标签</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="fengfaxia" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/demo/" title="demo">demo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/js中的运动/" title="js中的运动">js中的运动<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/高性能JavaScript/" title="高性能JavaScript">高性能JavaScript<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fengfaxia.github.io/" target="_blank" title="fengfaxia&#39;log">fengfaxia&#39;log</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="200" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=200&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=5448337646&verifier=9928f154&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m fengfaxia,love of learning <br/>
+			This is my blog,learn form each other.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5448337646" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/fengfaxia" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/about" target="_blank" title="fengfaxia">fengfaxia</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe6d1f421bbc9962127a50488f9ed37d1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

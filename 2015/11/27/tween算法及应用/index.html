@@ -1,0 +1,485 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>tween算法及应用——原生时间版运动 | fengfaxia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="fengfaxia">
+    
+
+    
+    <meta name="description" content="主要展示tween算法、运用它实现原生时间版运动并且比较速度版和时间版之间的差别，再谈谈运动中的一些问题。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tween算法及应用——原生时间版运动">
+<meta property="og:url" content="http://yoursite.com/2015/11/27/tween算法及应用/index.html">
+<meta property="og:site_name" content="fengfaxia">
+<meta property="og:description" content="主要展示tween算法、运用它实现原生时间版运动并且比较速度版和时间版之间的差别，再谈谈运动中的一些问题。">
+<meta property="og:updated_time" content="2015-11-27T12:46:59.805Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tween算法及应用——原生时间版运动">
+<meta name="twitter:description" content="主要展示tween算法、运用它实现原生时间版运动并且比较速度版和时间版之间的差别，再谈谈运动中的一些问题。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="fengfaxia" title="fengfaxia"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="fengfaxia">fengfaxia</a></h1>
+				<h2 class="blog-motto">拥抱变化</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home | 主页</a></li>
+					
+						<li><a href="/archives">Archives | 文章</a></li>
+					
+						<li><a href="/about">About | 关于我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/11/27/tween算法及应用/" title="tween算法及应用——原生时间版运动" itemprop="url">tween算法及应用——原生时间版运动</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
+		
+  <p class="article-time">
+    <time datetime="2015-11-27T12:46:59.805Z" itemprop="datePublished"> 发表于 2015-11-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#tween算法"><span class="toc-number">1.</span> <span class="toc-text">tween算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件版运动框架（会用到上面的tween算法）"><span class="toc-number">2.</span> <span class="toc-text">事件版运动框架（会用到上面的tween算法）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用上面的两个方法写一个demo"><span class="toc-number">3.</span> <span class="toc-text">用上面的两个方法写一个demo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#速度版和时间版之间的区别"><span class="toc-number">4.</span> <span class="toc-text">速度版和时间版之间的区别</span></a></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p>主要展示tween算法、运用它实现原生时间版运动并且比较速度版和时间版之间的差别，再谈谈运动中的一些问题。</p>
+</blockquote>
+ <a id="more"></a>
+<h3 id="tween算法">tween算法</h3><figure class="highlight"><figcaption><span>Tween = &#123;</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#9;linear: function (t, b, c, d)&#123;  //&#21248;&#36895;&#10;&#9;&#9;//t:current time &#24403;&#21069;&#26102;&#38388;&#10;&#9;&#9;//b:beginning value &#21021;&#22987;&#20540;&#10;&#9;&#9;//c:change in value &#21464;&#21270;&#20540;&#10;&#9;&#9;//d:dutation &#25345;&#32493;&#26102;&#38388;&#10;&#9;&#9;//return (&#30446;&#26631;&#28857;)&#10;&#9;&#9;return c*t/d + b;&#10;&#9;&#125;,&#10;&#9;easeIn: function(t, b, c, d)&#123;  //&#21152;&#36895;&#26354;&#32447;&#10;&#9;&#9;return c*(t/=d)*t + b;&#10;&#9;&#125;,&#10;&#9;easeOut: function(t, b, c, d)&#123;  //&#20943;&#36895;&#26354;&#32447;&#10;&#9;&#9;return -c *(t/=d)*(t-2) + b;&#10;&#9;&#125;,&#10;&#9;easeBoth: function(t, b, c, d)&#123;  //&#21152;&#36895;&#20943;&#36895;&#26354;&#32447;&#10;&#9;&#9;if ((t/=d/2) &#60; 1) &#123;&#10;&#9;&#9;&#9;return c/2*t*t + b;&#10;&#9;&#9;&#125;&#10;&#9;&#9;return -c/2 * ((--t)*(t-2) - 1) + b;&#10;&#9;&#125;,&#10;&#9;easeInStrong: function(t, b, c, d)&#123;  //&#21152;&#21152;&#36895;&#26354;&#32447;&#10;&#9;&#9;return c*(t/=d)*t*t*t + b;&#10;&#9;&#125;,&#10;&#9;easeOutStrong: function(t, b, c, d)&#123;  //&#20943;&#20943;&#36895;&#26354;&#32447;&#10;&#9;&#9;return -c * ((t=t/d-1)*t*t*t - 1) + b;&#10;&#9;&#125;,&#10;&#9;easeBothStrong: function(t, b, c, d)&#123;  //&#21152;&#21152;&#36895;&#20943;&#20943;&#36895;&#26354;&#32447;&#10;&#9;&#9;if ((t/=d/2) &#60; 1) &#123;&#10;&#9;&#9;&#9;return c/2*t*t*t*t + b;&#10;&#9;&#9;&#125;&#10;&#9;&#9;return -c/2 * ((t-=2)*t*t*t - 2) + b;&#10;&#9;&#125;,&#10;&#9;elasticIn: function(t, b, c, d, a, p)&#123;  //&#27491;&#24358;&#34928;&#20943;&#26354;&#32447;&#65288;&#24377;&#21160;&#28176;&#20837;&#65289;&#10;&#9;&#9;if (t === 0) &#123; &#10;&#9;&#9;&#9;return b; &#10;&#9;&#9;&#125;&#10;&#9;&#9;if ( (t /= d) == 1 ) &#123;&#10;&#9;&#9;&#9;return b+c; &#10;&#9;&#9;&#125;&#10;&#9;&#9;if (!p) &#123;&#10;&#9;&#9;&#9;p=d*0.3; &#10;&#9;&#9;&#125;&#10;&#9;&#9;if (!a || a &#60; Math.abs(c)) &#123;&#10;&#9;&#9;&#9;a = c; &#10;&#9;&#9;&#9;var s = p/4;&#10;&#9;&#9;&#125; else &#123;&#10;&#9;&#9;&#9;var s = p/(2*Math.PI) * Math.asin (c/a);&#10;&#9;&#9;&#125;&#10;&#9;&#9;return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;&#10;&#9;&#125;,&#10;&#9;elasticOut: function(t, b, c, d, a, p)&#123;    //&#27491;&#24358;&#22686;&#24378;&#26354;&#32447;&#65288;&#24377;&#21160;&#28176;&#20986;&#65289;&#10;&#9;&#9;if (t === 0) &#123;&#10;&#9;&#9;&#9;return b;&#10;&#9;&#9;&#125;&#10;&#9;&#9;if ( (t /= d) == 1 ) &#123;&#10;&#9;&#9;&#9;return b+c;&#10;&#9;&#9;&#125;&#10;&#9;&#9;if (!p) &#123;&#10;&#9;&#9;&#9;p=d*0.3;&#10;&#9;&#9;&#125;&#10;&#9;&#9;if (!a || a &#60; Math.abs(c)) &#123;&#10;&#9;&#9;&#9;a = c;&#10;&#9;&#9;&#9;var s = p / 4;&#10;&#9;&#9;&#125; else &#123;&#10;&#9;&#9;&#9;var s = p/(2*Math.PI) * Math.asin (c/a);&#10;&#9;&#9;&#125;&#10;&#9;&#9;return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;&#10;&#9;&#125;,    &#10;&#9;elasticBoth: function(t, b, c, d, a, p)&#123;&#10;&#9;&#9;if (t === 0) &#123;&#10;&#9;&#9;&#9;return b;&#10;&#9;&#9;&#125;&#10;&#9;&#9;if ( (t /= d/2) == 2 ) &#123;&#10;&#9;&#9;&#9;return b+c;&#10;&#9;&#9;&#125;&#10;&#9;&#9;if (!p) &#123;&#10;&#9;&#9;&#9;p = d*(0.3*1.5);&#10;&#9;&#9;&#125;&#10;&#9;&#9;if ( !a || a &#60; Math.abs(c) ) &#123;&#10;&#9;&#9;&#9;a = c; &#10;&#9;&#9;&#9;var s = p/4;&#10;&#9;&#9;&#125;&#10;&#9;&#9;else &#123;&#10;&#9;&#9;&#9;var s = p/(2*Math.PI) * Math.asin (c/a);&#10;&#9;&#9;&#125;&#10;&#9;&#9;if (t &#60; 1) &#123;&#10;&#9;&#9;&#9;return - 0.5*(a*Math.pow(2,10*(t-=1)) * &#10;&#9;&#9;&#9;&#9;&#9;Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;&#10;&#9;&#9;&#125;&#10;&#9;&#9;return a*Math.pow(2,-10*(t-=1)) * &#10;&#9;&#9;&#9;&#9;Math.sin( (t*d-s)*(2*Math.PI)/p )*0.5 + c + b;&#10;&#9;&#125;,&#10;&#9;backIn: function(t, b, c, d, s)&#123;     //&#22238;&#36864;&#21152;&#36895;&#65288;&#22238;&#36864;&#28176;&#20837;&#65289;&#10;&#9;&#9;if (typeof s == &#39;undefined&#39;) &#123;&#10;&#9;&#9;   s = 1.70158;&#10;&#9;&#9;&#125;&#10;&#9;&#9;return c*(t/=d)*t*((s+1)*t - s) + b;&#10;&#9;&#125;,&#10;&#9;backOut: function(t, b, c, d, s)&#123;&#10;&#9;&#9;if (typeof s == &#39;undefined&#39;) &#123;&#10;&#9;&#9;&#9;s = 3.70158;  //&#22238;&#32553;&#30340;&#36317;&#31163;&#10;&#9;&#9;&#125;&#10;&#9;&#9;return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;&#10;&#9;&#125;, &#10;&#9;backBoth: function(t, b, c, d, s)&#123;&#10;&#9;&#9;if (typeof s == &#39;undefined&#39;) &#123;&#10;&#9;&#9;&#9;s = 1.70158; &#10;&#9;&#9;&#125;&#10;&#9;&#9;if ((t /= d/2 ) &#60; 1) &#123;&#10;&#9;&#9;&#9;return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;&#10;&#9;&#9;&#125;&#10;&#9;&#9;return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;&#10;&#9;&#125;,&#10;&#9;bounceIn: function(t, b, c, d)&#123;    //&#24377;&#29699;&#20943;&#25391;&#65288;&#24377;&#29699;&#28176;&#20986;&#65289;&#10;&#9;&#9;return c - Tween[&#39;bounceOut&#39;](d-t, 0, c, d) + b;&#10;&#9;&#125;,       &#10;&#9;bounceOut: function(t, b, c, d)&#123;&#10;&#9;&#9;if ((t/=d) &#60; (1/2.75)) &#123;&#10;&#9;&#9;&#9;return c*(7.5625*t*t) + b;&#10;&#9;&#9;&#125; else if (t &#60; (2/2.75)) &#123;&#10;&#9;&#9;&#9;return c*(7.5625*(t-=(1.5/2.75))*t + 0.75) + b;&#10;&#9;&#9;&#125; else if (t &#60; (2.5/2.75)) &#123;&#10;&#9;&#9;&#9;return c*(7.5625*(t-=(2.25/2.75))*t + 0.9375) + b;&#10;&#9;&#9;&#125;&#10;&#9;&#9;return c*(7.5625*(t-=(2.625/2.75))*t + 0.984375) + b;&#10;&#9;&#125;,      &#10;&#9;bounceBoth: function(t, b, c, d)&#123;&#10;&#9;&#9;if (t &#60; d/2) &#123;&#10;&#9;&#9;&#9;return Tween[&#39;bounceIn&#39;](t*2, 0, c, d) * 0.5 + b;&#10;&#9;&#9;&#125;&#10;&#9;&#9;return Tween[&#39;bounceOut&#39;](t*2-d, 0, c, d) * 0.5 + c*0.5 + b;&#10;&#9;&#125;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="事件版运动框架（会用到上面的tween算法）">事件版运动框架（会用到上面的tween算法）</h3><figure class="highlight"><figcaption><span>startMove(obj,json,times,fx,fn)&#123;</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#9;&#10;&#9;if( typeof times == &#39;undefined&#39; )&#123;&#10;&#9;&#9;times = 400;&#10;&#9;&#9;fx = &#39;linear&#39;;&#10;&#9;&#125;&#10;&#9;&#10;&#9;if( typeof times == &#39;string&#39; )&#123;&#10;&#9;&#9;if(typeof fx == &#39;function&#39;)&#123;&#10;&#9;&#9;&#9;fn = fx;&#10;&#9;&#9;&#125;&#10;&#9;&#9;fx = times;&#10;&#9;&#9;times = 400;&#10;&#9;&#125;&#10;&#9;else if(typeof times == &#39;function&#39;)&#123;&#10;&#9;&#9;fn = times;&#10;&#9;&#9;times = 400;&#10;&#9;&#9;fx = &#39;linear&#39;;&#10;&#9;&#125;&#10;&#9;else if(typeof times == &#39;number&#39;)&#123;&#10;&#9;&#9;if(typeof fx == &#39;function&#39;)&#123;&#10;&#9;&#9;&#9;fn = fx;&#10;&#9;&#9;&#9;fx = &#39;linear&#39;;&#10;&#9;&#9;&#125;&#10;&#9;&#9;else if(typeof fx == &#39;undefined&#39;)&#123;&#10;&#9;&#9;&#9;fx = &#39;linear&#39;;&#10;&#9;&#9;&#125;&#10;&#9;&#125;&#10;&#9;&#10;&#9;var iCur = &#123;&#125;;&#10;&#9;&#10;&#9;for(var attr in json)&#123;&#10;&#9;&#9;iCur[attr] = 0;&#10;&#9;&#9;&#10;&#9;&#9;if( attr == &#39;opacity&#39; )&#123;&#10;&#9;&#9;&#9;iCur[attr] = Math.round(getStyle(obj,attr)*100);&#10;&#9;&#9;&#125;&#10;&#9;&#9;else&#123;&#10;&#9;&#9;&#9;iCur[attr] = parseInt(getStyle(obj,attr));&#10;&#9;&#9;&#125;&#10;&#9;&#9;&#10;&#9;&#125;&#10;&#9;&#10;&#9;var startTime = now();&#10;&#9;&#10;&#9;clearInterval(obj.timer);&#10;&#9;&#10;&#9;obj.timer = setInterval(function()&#123;&#10;&#9;&#9;&#10;&#9;&#9;var changeTime = now();&#10;&#9;&#9;&#10;&#9;&#9;var t = times - Math.max(0,startTime - changeTime + times);  //0&#21040;2000&#10;&#9;&#9;&#10;&#9;&#9;for(var attr in json)&#123;&#10;&#9;&#9;&#9;&#10;&#9;&#9;&#9;var value = Tween[fx](t,iCur[attr],json[attr]-iCur[attr],times);&#10;&#9;&#9;&#9;&#10;&#9;&#9;&#9;if(attr == &#39;opacity&#39;)&#123;&#10;&#9;&#9;&#9;&#9;obj.style.opacity = value/100;&#10;&#9;&#9;&#9;&#9;obj.style.filter = &#39;alpha(opacity=&#39;+value+&#39;)&#39;;&#10;&#9;&#9;&#9;&#125;&#10;&#9;&#9;&#9;else&#123;&#10;&#9;&#9;&#9;&#9;obj.style[attr] = value + &#39;px&#39;;&#10;&#9;&#9;&#9;&#125;&#10;&#9;&#9;&#9;&#10;&#9;&#9;&#125;&#10;&#9;&#9;&#10;&#9;&#9;if(t == times)&#123;&#10;&#9;&#9;&#9;clearInterval(obj.timer);&#10;&#9;&#9;&#9;if(fn)&#123;&#10;&#9;&#9;&#9;&#9;fn.call(obj);&#10;&#9;&#9;&#9;&#125;&#10;&#9;&#9;&#125;&#10;&#9;&#9;&#10;&#9;&#125;,13);&#10;&#9;&#10;&#9;function getStyle(obj,attr)&#123;&#10;&#9;&#9;if(obj.currentStyle)&#123;&#10;&#9;&#9;&#9;return obj.currentStyle[attr];&#10;&#9;&#9;&#125;&#10;&#9;&#9;else&#123;&#10;&#9;&#9;&#9;return getComputedStyle(obj,false)[attr];&#10;&#9;&#9;&#125;&#10;&#9;&#125;&#10;&#9;&#10;&#9;function now()&#123;&#10;&#9;&#9;return (new Date()).getTime();&#10;&#9;&#125;&#10;&#9;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="用上面的两个方法写一个demo">用上面的两个方法写一个demo</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="doctype">&lt;!DOCTYPE HTML&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">meta</span> <span class="attribute">http-equiv</span>=<span class="value">"Content-Type"</span> <span class="attribute">content</span>=<span class="value">"text/html; charset=utf-8"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">title</span>&gt;</span>点击放大<span class="tag">&lt;/<span class="title">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">style</span>&gt;</span><span class="css"></span><br><span class="line"><span class="id">#div1</span><span class="rules">&#123; <span class="rule"><span class="attribute">width</span>:<span class="value"><span class="number">100px</span></span></span>; <span class="rule"><span class="attribute">height</span>:<span class="value"><span class="number">100px</span></span></span>; <span class="rule"><span class="attribute">background</span>:<span class="value">red</span></span>; <span class="rule"><span class="attribute">position</span>:<span class="value">absolute</span></span>; <span class="rule"><span class="attribute">left</span>:<span class="value"><span class="number">200px</span></span></span>; <span class="rule"><span class="attribute">top</span>:<span class="value"><span class="number">200px</span></span></span>;&#125;</span></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="javascript"></span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">	<span class="keyword">var</span> oDiv = <span class="built_in">document</span>.getElementById(<span class="string">'div1'</span>);</span><br><span class="line">	</span><br><span class="line">	oDiv.onmouseover = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		startMove( <span class="keyword">this</span> , &#123;width : <span class="number">200</span> , height : <span class="number">200</span> , left : <span class="number">150</span> , top:<span class="number">150</span>&#125;,<span class="number">2000</span>,<span class="string">'linear'</span> ,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;);</span><br><span class="line">		</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">	oDiv.onmouseout = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		startMove( <span class="keyword">this</span> , &#123;width : <span class="number">100</span> , height : <span class="number">100</span> , left : <span class="number">200</span> , top:<span class="number">200</span>&#125;,<span class="number">2000</span> ,<span class="string">'linear'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;);</span><br><span class="line">		</span><br><span class="line">	&#125;;</span><br><span class="line">	</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="xml"><span class="tag">&lt;/<span class="title">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">div</span> <span class="attribute">id</span>=<span class="value">"div1"</span>&gt;</span><span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">html</span>&gt;</span></span></span></span><br></pre></td></tr></table></figure>
+<h3 id="速度版和时间版之间的区别">速度版和时间版之间的区别</h3><pre><code>-时间版运动框架
+<span class="comment"><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">startMove</span>(<span class="params">obj,json,endFn</span>)</span>&#123;</span><br><span class="line"></span><br><span class="line">	clearInterval(obj.timer);</span><br><span class="line">	</span><br><span class="line">	obj.timer = setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">var</span> bBtn = <span class="literal">true</span>;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">var</span> attr <span class="keyword">in</span> json)&#123;</span><br><span class="line">			</span><br><span class="line">			<span class="keyword">var</span> iCur = <span class="number">0</span>;</span><br><span class="line">		</span><br><span class="line">			<span class="keyword">if</span>(attr == <span class="string">'opacity'</span>)&#123;</span><br><span class="line">				<span class="keyword">if</span>(<span class="built_in">Math</span>.round(<span class="built_in">parseFloat</span>(getStyle(obj,attr))*<span class="number">100</span>)==<span class="number">0</span>)&#123;</span><br><span class="line">				iCur = <span class="built_in">Math</span>.round(<span class="built_in">parseFloat</span>(getStyle(obj,attr))*<span class="number">100</span>);</span><br><span class="line">				</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span>&#123;</span><br><span class="line">					iCur = <span class="built_in">Math</span>.round(<span class="built_in">parseFloat</span>(getStyle(obj,attr))*<span class="number">100</span>) || <span class="number">100</span>;</span><br><span class="line">				&#125;	</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span>&#123;</span><br><span class="line">				iCur = <span class="built_in">parseInt</span>(getStyle(obj,attr)) || <span class="number">0</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			<span class="keyword">var</span> iSpeed = (json[attr] - iCur)/<span class="number">20</span>;</span><br><span class="line">		iSpeed = iSpeed &gt;<span class="number">0</span> ? <span class="built_in">Math</span>.ceil(iSpeed) : <span class="built_in">Math</span>.floor(iSpeed);</span><br><span class="line">			<span class="keyword">if</span>(iCur!=json[attr])&#123;</span><br><span class="line">				bBtn = <span class="literal">false</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			<span class="keyword">if</span>(attr == <span class="string">'opacity'</span>)&#123;</span><br><span class="line">				obj.style.filter = <span class="string">'alpha(opacity='</span> +(iCur + iSpeed)+ <span class="string">')'</span>;</span><br><span class="line">				obj.style.opacity = (iCur + iSpeed)/<span class="number">100</span>;</span><br><span class="line">				</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span>&#123;</span><br><span class="line">				obj.style[attr] = iCur + iSpeed + <span class="string">'px'</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>(bBtn)&#123;</span><br><span class="line">			clearInterval(obj.timer);</span><br><span class="line">			</span><br><span class="line">			<span class="keyword">if</span>(endFn)&#123;</span><br><span class="line">				endFn.call(obj);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	&#125;,<span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getStyle</span>(<span class="params">obj,attr</span>)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(obj.currentStyle)&#123;</span><br><span class="line">		<span class="keyword">return</span> obj.currentStyle[attr];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> getComputedStyle(obj,<span class="literal">false</span>)[attr];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></span>
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/算法/">算法</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2015/11/27/tween算法及应用/" data-title="tween算法及应用——原生时间版运动 | fengfaxia" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2015/11/27/gitnote/" title="GitNote">
+  <strong>上一篇：</strong><br/>
+  <span>
+  GitNote</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2015/11/27/弹性运动及笔记/"  title="弹性运动 碰撞运动">
+ <strong>下一篇：</strong><br/> 
+ <span>弹性运动 碰撞运动
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#tween算法"><span class="toc-number">1.</span> <span class="toc-text">tween算法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#事件版运动框架（会用到上面的tween算法）"><span class="toc-number">2.</span> <span class="toc-text">事件版运动框架（会用到上面的tween算法）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用上面的两个方法写一个demo"><span class="toc-number">3.</span> <span class="toc-text">用上面的两个方法写一个demo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#速度版和时间版之间的区别"><span class="toc-number">4.</span> <span class="toc-text">速度版和时间版之间的区别</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="fengfaxia" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/demo/" title="demo">demo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/js中的运动/" title="js中的运动">js中的运动<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/高性能JavaScript/" title="高性能JavaScript">高性能JavaScript<sup>1</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fengfaxia.github.io/" target="_blank" title="fengfaxia&#39;log">fengfaxia&#39;log</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="200" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=200&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=5448337646&verifier=9928f154&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m fengfaxia,love of learning <br/>
+			This is my blog,learn form each other.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5448337646" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/fengfaxia" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/about" target="_blank" title="fengfaxia">fengfaxia</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe6d1f421bbc9962127a50488f9ed37d1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
