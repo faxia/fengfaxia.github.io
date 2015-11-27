@@ -53,11 +53,11 @@
 				<ul>
 					<ul>
 					 
-						<li><a href="/">Home|主页</a></li>
+						<li><a href="/">Home | 主页</a></li>
 					
-						<li><a href="/archives">Archives|文章</a></li>
+						<li><a href="/archives">Archives | 文章</a></li>
 					
-						<li><a href="/about">About|关于我</a></li>
+						<li><a href="/about">About | 关于我</a></li>
 					
 					<li>
  					
@@ -88,19 +88,16 @@
 		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
 		
   <p class="article-time">
-    <time datetime="2015-11-27T04:58:53.641Z" itemprop="datePublished"> 发表于 2015-11-27</time>
+    <time datetime="2015-11-27T06:01:58.001Z" itemprop="datePublished"> 发表于 2015-11-27</time>
     
   </p>
 </header>
     <div class="article-content">
         
-        <h3 id="避免重复求值">避免重复求值</h3><p> JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。</p>
-<p> <a href="2015/11/04/返回顶部demo/index.html">Read More</a></p>
-<p> 有四种标准方法可以实现：<strong>eval()、Function()沟站函数、setTimeout()和setInterval()</strong>,其中每个方法都允许你传入一个JavaScript代码字符串并执行它。看几个例子：<br>  <figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num1 = <span class="number">1</span>,</span><br><span class="line">	  num2 = <span class="number">2</span>,</span><br><span class="line"></span><br><span class="line">	  //eval()执行代码字符串</span><br><span class="line">	  <span class="literal">result</span> = eval( <span class="string">"num1 + num2"</span> ),</span><br><span class="line"></span><br><span class="line">	  //<span class="type">Function</span> 执行代码字符串</span><br><span class="line">	  sum = new <span class="type">Function</span>( <span class="string">"arg1"</span>,<span class="string">"arg2"</span>,<span class="string">"return arg1 + arg2"</span> );</span><br><span class="line"></span><br><span class="line">	  //setTimeout()执行代码字符串</span><br><span class="line">	  setTimeout( <span class="string">"sum = num1 + num2"</span>,<span class="number">200</span> );</span><br><span class="line"></span><br><span class="line">	  //setInterval()代码执行字符串</span><br><span class="line">	  setInterval( <span class="string">"sum = num1 + num2"</span>,<span class="number">200</span> );</span><br></pre></td></tr></table></figure></p>
-<p>  <strong>分析:</strong><br>  1.当你在JavaScript代码中执行另一JavaScript代码时，都会导致双重求值的性能消耗。此代码首先会以正常的方式求值，然后在执行过程中对包含字符串中的代码发起另一个求值运算。双重求值是一项代价昂贵的操作，它比直接包含的代码执行速度慢很多。<br>  2.作为一个比较点，各种浏览器访问一个数组条目时间各不相同，但如果使用eval()来访问数组条目的结果则大有区别，看例子：<br>  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable"><span class="keyword">var</span> item</span> = array[<span class="number">0</span>];<span class="comment">//比较快</span></span><br><span class="line"><span class="variable"><span class="keyword">var</span> item</span> = eval(<span class="string">"array[0]"</span>);<span class="comment">//较慢</span></span><br></pre></td></tr></table></figure></p>
-<p>  <strong>分析:</strong>如果使用eval()代替原生代码读取10000个数组条目，在不同的浏览器上差异非常大。<strong>主要是因为每次调用eval()时都要创建一个新的解释器/编译器实例</strong>。同样的过程也发生在使用Function()、setTimeout()和setInterval()时，这必然使得代码执行速度变慢。</p>
-<p>  大多数时候，没必要使用eval()和Function(),因此最好避免它们。至于另外两个函数:setTimeout()和setInterval(),建议传入函数而不是串来作为第一个参数。比如:<br>  <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="built_in">sum</span> = num1 + num2;</span><br><span class="line">&#125;,<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">setInterval (<span class="function"><span class="keyword">function</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="built_in">sum</span> = num1 + num2;</span><br><span class="line">&#125;,<span class="number">100</span>);</span><br></pre></td></tr></table></figure></p>
-<p>  避免双重求值是实现JavaScript运行期性能最优化的关键所在。<br>  <strong>注意:</strong> 优化后的JavaScript引擎通常会缓存住哪些使用了eval()且重复运行代码。</p>
+        <blockquote>
+<p>避免重复求值JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。</p>
+</blockquote>
+<p> <a href="2015/11/04/弹性运动及笔记/#more"><br>    <i class="fa fa-chevron-right"></i><br>     Read More<br> </a></p>
 
         
         
