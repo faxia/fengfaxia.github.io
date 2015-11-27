@@ -1,0 +1,442 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>高性能JavaScript笔记(一)——避免双重求值 | fengfaxia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="fengfaxia">
+    
+
+    
+    <meta name="description" content="避免重复求值 JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。有四种标准方法可以实现：eval()、Function()沟站函数、setTimeout()和setInterval(),其中每个方法都允许你传入一个JavaScript代码字符串并执行它。看几个例子：  1234567891011121314var num1 = 1,	  num2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高性能JavaScript笔记(一)——避免双重求值">
+<meta property="og:url" content="http://yoursite.com/2015/11/27/高性能代码笔记/index.html">
+<meta property="og:site_name" content="fengfaxia">
+<meta property="og:description" content="避免重复求值 JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。有四种标准方法可以实现：eval()、Function()沟站函数、setTimeout()和setInterval(),其中每个方法都允许你传入一个JavaScript代码字符串并执行它。看几个例子：  1234567891011121314var num1 = 1,	  num2">
+<meta property="og:updated_time" content="2015-11-27T04:51:02.052Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高性能JavaScript笔记(一)——避免双重求值">
+<meta name="twitter:description" content="避免重复求值 JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。有四种标准方法可以实现：eval()、Function()沟站函数、setTimeout()和setInterval(),其中每个方法都允许你传入一个JavaScript代码字符串并执行它。看几个例子：  1234567891011121314var num1 = 1,	  num2">
+
+    
+    <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="fengfaxia" title="fengfaxia"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="fengfaxia">fengfaxia</a></h1>
+				<h2 class="blog-motto">拥抱变化</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home|主页</a></li>
+					
+						<li><a href="/archives">Archives|文章</a></li>
+					
+						<li><a href="/about">About|关于我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/11/27/高性能代码笔记/" title="高性能JavaScript笔记(一)——避免双重求值" itemprop="url">高性能JavaScript笔记(一)——避免双重求值</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
+		
+  <p class="article-time">
+    <time datetime="2015-11-27T04:51:02.052Z" itemprop="datePublished"> 发表于 2015-11-27</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#避免重复求值"><span class="toc-number">1.</span> <span class="toc-text">避免重复求值</span></a></li></ol>
+		
+		</div>
+		
+		<h3 id="避免重复求值">避免重复求值</h3><p> JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。有四种标准方法可以实现：<strong>eval()、Function()沟站函数、setTimeout()和setInterval()</strong>,其中每个方法都允许你传入一个JavaScript代码字符串并执行它。看几个例子：<br>  <figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num1 = <span class="number">1</span>,</span><br><span class="line">	  num2 = <span class="number">2</span>,</span><br><span class="line"></span><br><span class="line">	  //eval()执行代码字符串</span><br><span class="line">	  <span class="literal">result</span> = eval( <span class="string">"num1 + num2"</span> ),</span><br><span class="line"></span><br><span class="line">	  //<span class="type">Function</span> 执行代码字符串</span><br><span class="line">	  sum = new <span class="type">Function</span>( <span class="string">"arg1"</span>,<span class="string">"arg2"</span>,<span class="string">"return arg1 + arg2"</span> );</span><br><span class="line"></span><br><span class="line">	  //setTimeout()执行代码字符串</span><br><span class="line">	  setTimeout( <span class="string">"sum = num1 + num2"</span>,<span class="number">200</span> );</span><br><span class="line"></span><br><span class="line">	  //setInterval()代码执行字符串</span><br><span class="line">	  setInterval( <span class="string">"sum = num1 + num2"</span>,<span class="number">200</span> );</span><br></pre></td></tr></table></figure></p>
+<p>  <strong>分析:</strong><br>  1.当你在JavaScript代码中执行另一JavaScript代码时，都会导致双重求值的性能消耗。此代码首先会以正常的方式求值，然后在执行过程中对包含字符串中的代码发起另一个求值运算。双重求值是一项代价昂贵的操作，它比直接包含的代码执行速度慢很多。<br>  2.作为一个比较点，各种浏览器访问一个数组条目时间各不相同，但如果使用eval()来访问数组条目的结果则大有区别，看例子：<br>  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable"><span class="keyword">var</span> item</span> = array[<span class="number">0</span>];<span class="comment">//比较快</span></span><br><span class="line"><span class="variable"><span class="keyword">var</span> item</span> = eval(<span class="string">"array[0]"</span>);<span class="comment">//较慢</span></span><br></pre></td></tr></table></figure></p>
+<p>  <strong>分析:</strong>如果使用eval()代替原生代码读取10000个数组条目，在不同的浏览器上差异非常大。<strong>主要是因为每次调用eval()时都要创建一个新的解释器/编译器实例</strong>。同样的过程也发生在使用Function()、setTimeout()和setInterval()时，这必然使得代码执行速度变慢。</p>
+<p>  大多数时候，没必要使用eval()和Function(),因此最好避免它们。至于另外两个函数:setTimeout()和setInterval(),建议传入函数而不是串来作为第一个参数。比如:<br>  <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="built_in">sum</span> = num1 + num2;</span><br><span class="line">&#125;,<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">setInterval (<span class="function"><span class="keyword">function</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="built_in">sum</span> = num1 + num2;</span><br><span class="line">&#125;,<span class="number">100</span>);</span><br></pre></td></tr></table></figure></p>
+<p>  避免双重求值是实现JavaScript运行期性能最优化的关键所在。<br>  <strong>注意:</strong> 优化后的JavaScript引擎通常会缓存住哪些使用了eval()且重复运行代码。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2015/11/27/高性能代码笔记/" data-title="高性能JavaScript笔记(一)——避免双重求值 | fengfaxia" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/11/04/tween算法及应用/"  title="tween算法及应用——原生时间版运动">
+ <strong>下一篇：</strong><br/> 
+ <span>tween算法及应用——原生时间版运动
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#避免重复求值"><span class="toc-number">1.</span> <span class="toc-text">避免重复求值</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="fengfaxia" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fengfaxia.github.io/" target="_blank" title="fengfaxia&#39;log">fengfaxia&#39;log</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=5448337646&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m fengfaxia,love of learning <br/>
+			This is my blog,learn form each other.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5448337646" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/fengfaxia" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/about" target="_blank" title="fengfaxia">fengfaxia</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe6d1f421bbc9962127a50488f9ed37d1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
