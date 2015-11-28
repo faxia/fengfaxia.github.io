@@ -4,23 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>高性能JavaScript笔记(一)——避免双重求值 | fengfaxia</title>
+    <title>写博客中遇到那些事儿 | fengfaxia</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="fengfaxia">
     
 
     
-    <meta name="description" content="JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。">
+    <meta name="description" content="总结一下今天在写博客中遇到的问题以及解决方法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="高性能JavaScript笔记(一)——避免双重求值">
-<meta property="og:url" content="http://yoursite.com/2015/11/27/高性能代码笔记/index.html">
+<meta property="og:title" content="写博客中遇到那些事儿">
+<meta property="og:url" content="http://yoursite.com/2015/11/27/写博客中遇到问题总结/index.html">
 <meta property="og:site_name" content="fengfaxia">
-<meta property="og:description" content="JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。">
-<meta property="og:updated_time" content="2015-11-27T13:13:52.740Z">
+<meta property="og:description" content="总结一下今天在写博客中遇到的问题以及解决方法">
+<meta property="og:updated_time" content="2015-11-27T14:03:36.599Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="高性能JavaScript笔记(一)——避免双重求值">
-<meta name="twitter:description" content="JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。">
+<meta name="twitter:title" content="写博客中遇到那些事儿">
+<meta name="twitter:description" content="总结一下今天在写博客中遇到的问题以及解决方法">
 
     
     <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
@@ -80,14 +80,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/11/27/高性能代码笔记/" title="高性能JavaScript笔记(一)——避免双重求值" itemprop="url">高性能JavaScript笔记(一)——避免双重求值</a>
+      <a href="/2015/11/27/写博客中遇到问题总结/" title="写博客中遇到那些事儿" itemprop="url">写博客中遇到那些事儿</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
 		
   <p class="article-time">
-    <time datetime="2015-11-27T13:13:52.740Z" itemprop="datePublished"> 发表于 2015-11-27</time>
+    <time datetime="2015-11-27T14:03:36.599Z" itemprop="datePublished"> 发表于 2015-11-27</time>
     
   </p>
 </header>
@@ -96,19 +96,17 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目录</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_-md文档的开头模板"><span class="toc-number">1.</span> <span class="toc-text">1. .md文档的开头模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-针对博客折叠问题"><span class="toc-number">2.</span> <span class="toc-text">2.针对博客折叠问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-博客中插入微博秀"><span class="toc-number">3.</span> <span class="toc-text">3.博客中插入微博秀</span></a></li></ol>
 		
 		</div>
 		
 		<blockquote>
-<p>JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。</p>
+<p>总结一下今天在写博客中遇到的问题以及解决方法</p>
 </blockquote>
  <a id="more"></a>
-<p> 有四种标准方法可以实现：<strong>eval()、Function()沟站函数、setTimeout()和setInterval()</strong>,其中每个方法都允许你传入一个JavaScript代码字符串并执行它。看几个例子：<br>  <figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num1 = <span class="number">1</span>,</span><br><span class="line">	  num2 = <span class="number">2</span>,</span><br><span class="line"></span><br><span class="line">	  //eval()执行代码字符串</span><br><span class="line">	  <span class="literal">result</span> = eval( <span class="string">"num1 + num2"</span> ),</span><br><span class="line"></span><br><span class="line">	  //<span class="type">Function</span> 执行代码字符串</span><br><span class="line">	  sum = new <span class="type">Function</span>( <span class="string">"arg1"</span>,<span class="string">"arg2"</span>,<span class="string">"return arg1 + arg2"</span> );</span><br><span class="line"></span><br><span class="line">	  //setTimeout()执行代码字符串</span><br><span class="line">	  setTimeout( <span class="string">"sum = num1 + num2"</span>,<span class="number">200</span> );</span><br><span class="line"></span><br><span class="line">	  //setInterval()代码执行字符串</span><br><span class="line">	  setInterval( <span class="string">"sum = num1 + num2"</span>,<span class="number">200</span> );</span><br></pre></td></tr></table></figure></p>
-<p>  <strong>分析:</strong><br>  1.当你在JavaScript代码中执行另一JavaScript代码时，都会导致双重求值的性能消耗。此代码首先会以正常的方式求值，然后在执行过程中对包含字符串中的代码发起另一个求值运算。双重求值是一项代价昂贵的操作，它比直接包含的代码执行速度慢很多。<br>  2.作为一个比较点，各种浏览器访问一个数组条目时间各不相同，但如果使用eval()来访问数组条目的结果则大有区别，看例子：<br>  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable"><span class="keyword">var</span> item</span> = array[<span class="number">0</span>];<span class="comment">//比较快</span></span><br><span class="line"><span class="variable"><span class="keyword">var</span> item</span> = eval(<span class="string">"array[0]"</span>);<span class="comment">//较慢</span></span><br></pre></td></tr></table></figure></p>
-<p>  <strong>分析:</strong>如果使用eval()代替原生代码读取10000个数组条目，在不同的浏览器上差异非常大。<strong>主要是因为每次调用eval()时都要创建一个新的解释器/编译器实例</strong>。同样的过程也发生在使用Function()、setTimeout()和setInterval()时，这必然使得代码执行速度变慢。</p>
-<p>  大多数时候，没必要使用eval()和Function(),因此最好避免它们。至于另外两个函数:setTimeout()和setInterval(),建议传入函数而不是串来作为第一个参数。比如:<br>  <figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">setTimeout(<span class="function"><span class="keyword">function</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="built_in">sum</span> = num1 + num2;</span><br><span class="line">&#125;,<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">setInterval (<span class="function"><span class="keyword">function</span><span class="params">()</span></span> &#123;</span><br><span class="line"> <span class="built_in">sum</span> = num1 + num2;</span><br><span class="line">&#125;,<span class="number">100</span>);</span><br></pre></td></tr></table></figure></p>
-<p>  避免双重求值是实现JavaScript运行期性能最优化的关键所在。<br>  <strong>注意:</strong> 优化后的JavaScript引擎通常会缓存住哪些使用了eval()且重复运行代码。</p>
+<h3 id="1-_-md文档的开头模板">1. .md文档的开头模板</h3><p>  title: 使用Hexo搭建个人博客<br>  layout: post<br>  date: 2014-03-03 19:07:43<br>  comments: true<br>  categories: Blog<br>  tags: [Hexo]<br>  keywords: Hexo, Blog<br>  description: 修改修改再修改<br>  我常用的是<em>title: <strong>(空格)</strong>XX、categories: <strong>(空格)</strong>XX、tags: <strong>(空格)</strong>XX</em>。categorires和title以及tags前面必须有空格才会生效</p>
+<h3 id="2-针对博客折叠问题">2.针对博客折叠问题</h3><p> 今天找了好久，终于找到实现Read More功能的标签<strong><!--more--></strong>，<em>注意与上一行之间空出一行，同时要缩进一字符</em>。在这篇博客中看见的，原文中还有很多关于hexo博客优秀技巧<a href="http://zipperary.com/2013/05/30/hexo-guide-4/" target="_blank" rel="external">hexo博客的优化技巧</a></p>
+<h3 id="3-博客中插入微博秀">3.博客中插入微博秀</h3><p> 当初切过优设网中的一个微博秀，现在已托管到github上<a href="">github链接</a>。不知道直接插入微博秀的iframe链接就可以，还傻傻的布局。<br> 首先<a href="http://app.weibo.com/tool/weiboshow" target="_blank" rel="external">微博秀的链接</a>上面有说明详细说明怎么设置微博秀复制链接<br> 其次，找到你目录下的E:\Hexo\themes\jacman\layout_widget\weibo.ejs，替换iframe链接即可。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -116,7 +114,7 @@
 
 <div class="article-categories">
   <span></span>
-  <a class="article-category-link" href="/categories/高性能JavaScript/">高性能JavaScript</a>
+  <a class="article-category-link" href="/categories/问题总结/">问题总结</a>
 </div>
 
 
@@ -126,7 +124,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2015/11/27/高性能代码笔记/" data-title="高性能JavaScript笔记(一)——避免双重求值 | fengfaxia" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2015/11/27/写博客中遇到问题总结/" data-title="写博客中遇到那些事儿 | fengfaxia" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -140,18 +138,18 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2015/11/27/写博客中遇到问题总结/" title="写博客中遇到那些事儿">
+ <a href="/2015/11/28/高性能JavaScript笔记/" title="高性能JavaScript笔记(二)——使用Object/Array直接量">
   <strong>上一篇：</strong><br/>
   <span>
-  写博客中遇到那些事儿</span>
+  高性能JavaScript笔记(二)——使用Object/Array直接量</span>
 </a>
 </div>
 
 
 <div class="next">
-<a href="/2015/11/27/gitnote/"  title="GitNote">
+<a href="/2015/11/27/高性能代码笔记/"  title="高性能JavaScript笔记(一)——避免双重求值">
  <strong>下一篇：</strong><br/> 
- <span>GitNote
+ <span>高性能JavaScript笔记(一)——避免双重求值
 </span>
 </a>
 </div>
@@ -165,7 +163,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目录</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_-md文档的开头模板"><span class="toc-number">1.</span> <span class="toc-text">1. .md文档的开头模板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-针对博客折叠问题"><span class="toc-number">2.</span> <span class="toc-text">2.针对博客折叠问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-博客中插入微博秀"><span class="toc-number">3.</span> <span class="toc-text">3.博客中插入微博秀</span></a></li></ol>
  
   </div>
 

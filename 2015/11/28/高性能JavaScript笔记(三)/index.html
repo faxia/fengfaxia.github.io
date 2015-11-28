@@ -1,0 +1,489 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>高性能JavaScript笔记(三)——不要重复工作 | fengfaxia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="fengfaxia">
+    
+
+    
+    <meta name="description" content="很多时候代码中都在做重复，不知道怎么避免它。今天get延迟加载和条件预加载能够很好的避免它。就拿最常见的重复工作就是浏览器探测。基于浏览器功能作分支判断导致产生大量的代码。考虑一下添加和移除事件处理器的例子。典型的夸浏览器代码写法如下:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高性能JavaScript笔记(三)——不要重复工作">
+<meta property="og:url" content="http://yoursite.com/2015/11/28/高性能JavaScript笔记(三)/index.html">
+<meta property="og:site_name" content="fengfaxia">
+<meta property="og:description" content="很多时候代码中都在做重复，不知道怎么避免它。今天get延迟加载和条件预加载能够很好的避免它。就拿最常见的重复工作就是浏览器探测。基于浏览器功能作分支判断导致产生大量的代码。考虑一下添加和移除事件处理器的例子。典型的夸浏览器代码写法如下:">
+<meta property="og:updated_time" content="2015-11-28T10:47:57.867Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="高性能JavaScript笔记(三)——不要重复工作">
+<meta name="twitter:description" content="很多时候代码中都在做重复，不知道怎么避免它。今天get延迟加载和条件预加载能够很好的避免它。就拿最常见的重复工作就是浏览器探测。基于浏览器功能作分支判断导致产生大量的代码。考虑一下添加和移除事件处理器的例子。典型的夸浏览器代码写法如下:">
+
+    
+    <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="fengfaxia" title="fengfaxia"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="fengfaxia">fengfaxia</a></h1>
+				<h2 class="blog-motto">拥抱变化</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home | 主页</a></li>
+					
+						<li><a href="/archives">Archives | 文章</a></li>
+					
+						<li><a href="/about">About | 关于我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/11/28/高性能JavaScript笔记(三)/" title="高性能JavaScript笔记(三)——不要重复工作" itemprop="url">高性能JavaScript笔记(三)——不要重复工作</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
+		
+  <p class="article-time">
+    <time datetime="2015-11-28T10:47:57.867Z" itemprop="datePublished"> 发表于 2015-11-28</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#延迟加载"><span class="toc-number">1.</span> <span class="toc-text">延迟加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#条件预加载"><span class="toc-number">2.</span> <span class="toc-text">条件预加载</span></a></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p>很多时候代码中都在做重复，不知道怎么避免它。今天get延迟加载和条件预加载能够很好的避免它。就拿最常见的重复工作就是浏览器探测。基于浏览器功能作分支判断导致产生大量的代码。考虑一下添加和移除事件处理器的例子。典型的夸浏览器代码写法如下:</p>
+</blockquote>
+ <a id="more"></a>
+ <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function">function <span class="title">addHandler</span><span class="params">(<span class="keyword">target</span>,eventType,handle)</span> </span>&#123;</span><br><span class="line"> <span class="keyword">if</span> (<span class="keyword">target</span>.addEventListener) &#123;<span class="comment">//DOM2 Events</span></span><br><span class="line"> 	<span class="keyword">target</span>.addEventListener(eventType,handle,<span class="keyword">false</span>);</span><br><span class="line"> &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"> 	<span class="keyword">target</span>.attachEvent(<span class="string">"on"</span> + eventType,<span class="keyword">handler</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">function <span class="title">removeHandler</span><span class="params">(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">target</span>.removeHandler) &#123;<span class="comment">//DOM2 Events</span></span><br><span class="line">		<span class="keyword">target</span>.removeHandler(eventType,<span class="keyword">handler</span>,<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		tatget.detachEvent(<span class="string">"on"</span> + eventType,<span class="keyword">handler</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>代码实现功能:</strong>此代码通过测试addEventListener() 和removeEventListener()来检查DOM Level2事假是否被浏览器支持。除IE外所有主流浏览器支持DOM Level2事件。如果此方法在target中不存在，则嘉定当前浏览器是IE,并使用IE特有的方法。<br> <em>分析:乍一看这些函数似乎已经经过充分优化。隐藏的性能问题在于每次函数调用时都做了重复工作**。因为每次检查过程都相同:看看指定方法是否存在。如果你嘉定target唯一的值就是DOM对象，而且用户不可能在页面加载完成后奇迹般地改变浏览器，那么这次检查就是重复的。如果在第一次调用addHandler()就确定addEventListener是存在的，那么随后调用时也都在。每次调用一个函数都重复相同的工作是一种浪费。</em>这段话分析的很棒，那么接着看看哪几种方法可以避免它。</p>
+<h3 id="延迟加载">延迟加载</h3><p> 第一种消除函数中的重复工作的方法是延迟加载。延迟加载意味着在信息被使用前不会做任何操作。比如前面的例子，在函数被调用前，没有必要判断该调用哪个方法去绑定或取消绑定事件处理器。采用延迟加载后的函数版本如下：</p>
+ <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function">function <span class="title">addHandler</span> <span class="params">(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>)</span> </span>&#123;</span><br><span class="line">	 <span class="comment">//重复现有函数</span></span><br><span class="line">	 <span class="keyword">if</span> (<span class="keyword">target</span>.addEventListener) &#123;</span><br><span class="line">	 	addHandler = function(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>) &#123;</span><br><span class="line">	 		<span class="keyword">target</span>.addEventListener(eventType,<span class="keyword">handler</span>,flase);</span><br><span class="line">	 	&#125;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		addHandler = function(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>) &#123;</span><br><span class="line">			<span class="keyword">target</span>.attachEvent(<span class="string">"on"</span> + eventType,<span class="keyword">handler</span>);</span><br><span class="line">		&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//调用新函数</span></span><br><span class="line">	addHandler(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">function <span class="title">removeHandler</span> <span class="params">(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>)</span> </span>&#123;</span><br><span class="line">	<span class="comment">//复写现有函数</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="keyword">target</span>.removeEventListener) &#123; <span class="comment">//DOM2 Events</span></span><br><span class="line">		removeHandler = function(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>) &#123;</span><br><span class="line">			<span class="keyword">target</span>.addEventListener(eventType,<span class="keyword">handler</span>,<span class="keyword">false</span>);</span><br><span class="line">		&#125;;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;<span class="comment">//IE</span></span><br><span class="line">		removeHandler = function(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>) &#123;</span><br><span class="line">			<span class="keyword">target</span>.detachEvent(<span class="string">"on"</span> + eventType,<span class="keyword">handler</span>);</span><br><span class="line">		&#125;;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//调用新函数</span></span><br><span class="line">	removeHandler(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> <strong>分析:</strong>这两个函数实现了延迟加载模式。这两个方法在第一次调用时，会先检查并决定使用哪种方法去绑定或取消绑定事件处理器。然后原始函数被包含正确操作的新函数覆盖。最后一步调用新函数，并传入原始参数。随后<strong>每次调用addHandler()或removeHandler()</strong>都不会再做检查，因为检测代码已经被新函数覆盖。</p>
+<p>  <strong>优缺点:</strong>调用延迟加载函数时，第一次总会消耗较长时间，因为它必须运行检测接着再调用另一个函数完成任务。但随后调用相同的函数会更快，因为不需要再执行检测逻辑。当一个函数在页面中不会立刻调用，延迟加载是最好的选择。</p>
+<h3 id="条件预加载">条件预加载</h3><p>  另一种选择是:条件预加载，它会在脚本加载期间提前检测，而不会等到函数被调用。检测的操作依然只有一次，知识它在过程中来的更早。例如:<br>  <figure class="highlight aspectj"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var addHandler = document.body.addEventListener ?</span><br><span class="line">					function(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>) &#123;</span><br><span class="line"> 					<span class="keyword">target</span>.addEventListener(eventType,<span class="keyword">handler</span>,<span class="keyword">false</span>);</span><br><span class="line"> 				&#125;:</span><br><span class="line"> 				function(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>) &#123;</span><br><span class="line"> 					<span class="keyword">target</span>.attachEvent(<span class="string">"on"</span> + eventType,hanlder);</span><br><span class="line"> 				&#125;;</span><br><span class="line">var removeHandler = document.body.removeEventListener?</span><br><span class="line">					function(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>) &#123;</span><br><span class="line">				<span class="keyword">target</span>.removeEventListener(eventType,<span class="keyword">handler</span>,flase);</span><br><span class="line">					&#125;:</span><br><span class="line">					function(<span class="keyword">target</span>,eventType,<span class="keyword">handler</span>) &#123;</span><br><span class="line">				<span class="keyword">target</span>.detachEvent(<span class="string">"on"</span> + eventType,<span class="keyword">handler</span>);</span><br><span class="line">					&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>  <strong>分析:</strong>这个例子先检查addEventListener()和removeEventListener()是否存在，然后根据结果指定最佳的函数。如果存在的话，三元运算符会返回DOM Level2函数，否则返回IE特有函数。这样做的结果是所有对allHandler()和removeHandler()的调用都十分块，因为检测提前发生了</p>
+<p>   <strong>优缺点:</strong>条件预加载确保所有函数调用消耗的时间相同。其代价是需要在脚本加载时就检测，而不是加载后。预加载适用于一个函数马上就要被用到，并且在整个页面的生命周期中频繁出现的场合。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/高性能JavaScript/">高性能JavaScript</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2015/11/28/高性能JavaScript笔记(三)/" data-title="高性能JavaScript笔记(三)——不要重复工作 | fengfaxia" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/11/28/高性能JavaScript笔记/"  title="高性能JavaScript笔记(二)——使用Object/Array直接量">
+ <strong>下一篇：</strong><br/> 
+ <span>高性能JavaScript笔记(二)——使用Object/Array直接量
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#延迟加载"><span class="toc-number">1.</span> <span class="toc-text">延迟加载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#条件预加载"><span class="toc-number">2.</span> <span class="toc-text">条件预加载</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="fengfaxia" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/demo/" title="demo">demo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/js中的运动/" title="js中的运动">js中的运动<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔记/" title="笔记">笔记<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/问题总结/" title="问题总结">问题总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/高性能JavaScript/" title="高性能JavaScript">高性能JavaScript<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fengfaxia.github.io/" target="_blank" title="fengfaxia&#39;log">fengfaxia&#39;log</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="200" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=200&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=5448337646&verifier=9928f154&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m fengfaxia,love of learning <br/>
+			This is my blog,learn form each other.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5448337646" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/fengfaxia" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/about" target="_blank" title="fengfaxia">fengfaxia</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe6d1f421bbc9962127a50488f9ed37d1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
