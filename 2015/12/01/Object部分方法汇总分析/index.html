@@ -11,15 +11,22 @@
     
 
     
-    <meta name="description" content="Embrace change">
-<meta property="og:type" content="website">
+    <meta name="description" content="title: Object 部分方法总结及使用tags:categories: 笔记
+1.Object.defineProperty()   该方法接收三个参数：属性所在对象、属性的名字和一个描述对象。其中，描述符对象属性必须是：configurable、enumerable、writable和value。设置其中的一或多个值，可以修改对应的特性值。例1:
+  12345678 var perso">
+<meta property="og:type" content="article">
 <meta property="og:title" content="fengfaxia">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/12/01/Object部分方法汇总分析/index.html">
 <meta property="og:site_name" content="fengfaxia">
-<meta property="og:description" content="Embrace change">
+<meta property="og:description" content="title: Object 部分方法总结及使用tags:categories: 笔记
+1.Object.defineProperty()   该方法接收三个参数：属性所在对象、属性的名字和一个描述对象。其中，描述符对象属性必须是：configurable、enumerable、writable和value。设置其中的一或多个值，可以修改对应的特性值。例1:
+  12345678 var perso">
+<meta property="og:updated_time" content="2015-12-01T15:02:58.408Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fengfaxia">
-<meta name="twitter:description" content="Embrace change">
+<meta name="twitter:description" content="title: Object 部分方法总结及使用tags:categories: 笔记
+1.Object.defineProperty()   该方法接收三个参数：属性所在对象、属性的名字和一个描述对象。其中，描述符对象属性必须是：configurable、enumerable、writable和value。设置其中的一或多个值，可以修改对应的特性值。例1:
+  12345678 var perso">
 
     
     <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
@@ -73,12 +80,10 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/2015/12/01/Object部分方法汇总分析/" title="" itemprop="url"></a>
@@ -92,9 +97,16 @@
     
   </p>
 </header>
-    <div class="article-content">
-        
-        <p>title: Object 部分方法总结及使用<br>tags:<br>categories: 笔记</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Object-defineProperty()"><span class="toc-number">1.</span> <span class="toc-text">1.Object.defineProperty()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_Object-defineProperties()方法"><span class="toc-number">2.</span> <span class="toc-text">2. Object.defineProperties()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Object-getOwnPropertyDescriptor()方法"><span class="toc-number">3.</span> <span class="toc-text">3.Object.getOwnPropertyDescriptor()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_Object-isPrototypeOf()"><span class="toc-number">4.</span> <span class="toc-text">4. Object.isPrototypeOf()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_Object-getPrototypeOf()"><span class="toc-number">5.</span> <span class="toc-text">5. Object.getPrototypeOf()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-_Object-hasOwnProperty()"><span class="toc-number">6.</span> <span class="toc-text">6. Object.hasOwnProperty()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-_Object-keys()方法"><span class="toc-number">7.</span> <span class="toc-text">7. Object.keys()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Object-getOwnPropertyNames()方法。"><span class="toc-number">8.</span> <span class="toc-text">8.Object.getOwnPropertyNames()方法。</span></a></li></ol>
+		
+		</div>
+		
+		<p>title: Object 部分方法总结及使用<br>tags:<br>categories: 笔记</p>
 <h3 id="1-Object-defineProperty()">1.Object.defineProperty()</h3><p>   该方法接收三个参数：属性所在对象、属性的名字和一个描述对象。其中，描述符对象属性必须是：configurable、enumerable、writable和value。设置其中的一或多个值，可以修改对应的特性值。例1:</p>
   <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">var</span> person = &#123;&#125;;</span><br><span class="line"> Object.defineProperty(person,<span class="string">"name"</span>,&#123;</span><br><span class="line">	writable:<span class="keyword">false</span>,</span><br><span class="line">	<span class="keyword">value</span>:<span class="string">"Nicholas"</span></span><br><span class="line">&#125;);</span><br><span class="line">alert(person.name);<span class="comment">//"Nicholas"</span></span><br><span class="line">person.name = <span class="string">"Gerg"</span>;</span><br><span class="line">alert(person.name);<span class="comment">//"Nicholas"</span></span><br></pre></td></tr></table></figure>
 <p>   <strong>备注1:</strong>要修改属性（其中属性包括两种:数据属性和访问器属性，数据属性有4特性：[[Configurable]]、[[Enumerable]]、[[Writable]]和[[Value]];访问器属性也包括4个属性[[Configurable]]、[[Enumerable]]、[[Get]]和[[Set]]）默认特性，必须使用ES5的Object.defineProperty()方法。</p>
@@ -123,14 +135,9 @@
 </code></pre><h3 id="8-Object-getOwnPropertyNames()方法。">8.Object.getOwnPropertyNames()方法。</h3><pre><code>该方法得到所有实例属性，无论它是否可枚举。在例6的基础上加上<span class="keyword">*</span><span class="keyword">*</span>var keys = Object.getOwnPropertyNames(Person.prototype);
 alert(keys);//<span class="string">"constructor、name、age、job、sayName"</span>
 <span class="keyword">*</span><span class="keyword">*</span>
-</code></pre>
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 
@@ -138,488 +145,42 @@ alert(keys);//<span class="string">"constructor、name、age、job、sayName"</s
 
 
 
-
-<div class="comments-count">
+	<div class="article-share" id="share">
 	
-</div>
+	  <div data-url="http://yoursite.com/2015/12/01/Object部分方法汇总分析/" data-title="fengfaxia" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
 
 </footer>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/11/28/高性能JavaScript笔记(三)/" title="高性能JavaScript笔记(三)——不要重复工作" itemprop="url">高性能JavaScript笔记(三)——不要重复工作</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-28T10:47:57.867Z" itemprop="datePublished"> 发表于 2015-11-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>很多时候代码中都在做重复，不知道怎么避免它。今天get延迟加载和条件预加载能够很好的避免它。就拿最常见的重复工作就是浏览器探测。基于浏览器功能作分支判断导致产生大量的代码。考虑一下添加和移除事件处理器的例子。典型的夸浏览器代码写法如下:</p>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/11/28/高性能JavaScript笔记(三)/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/高性能JavaScript/">高性能JavaScript</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
+   	       
+	</article>
 	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/11/28/高性能JavaScript笔记(三)/"  title="高性能JavaScript笔记(三)——不要重复工作">
+ <strong>下一篇：</strong><br/> 
+ <span>高性能JavaScript笔记(三)——不要重复工作
+</span>
+</a>
 </div>
 
-</footer>
+</nav>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/11/28/高性能JavaScript笔记/" title="高性能JavaScript笔记(二)——使用Object/Array直接量" itemprop="url">高性能JavaScript笔记(二)——使用Object/Array直接量</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-28T07:55:42.097Z" itemprop="datePublished"> 发表于 2015-11-28</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>在JavaScript中创建对象和数组的方法有多种，但使用对象和数组直接量是最快的方式。如果不使用直接量，那么典型的对象创建和赋值的写法如下:</p>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/11/28/高性能JavaScript笔记/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/笔记/">笔记</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
 	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/11/27/写博客中遇到问题总结/" title="写博客中遇到那些事儿" itemprop="url">写博客中遇到那些事儿</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-27T14:03:36.599Z" itemprop="datePublished"> 发表于 2015-11-27</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>总结一下今天在写博客中遇到的问题以及解决方法</p>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/11/27/写博客中遇到问题总结/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/问题总结/">问题总结</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/11/27/高性能代码笔记/" title="高性能JavaScript笔记(一)——避免双重求值" itemprop="url">高性能JavaScript笔记(一)——避免双重求值</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-27T13:13:52.740Z" itemprop="datePublished"> 发表于 2015-11-27</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>JavaScript像其他很多脚本语言一样，允许你在程序中提取一个包含代码的字符串，然后动态的执行它。</p>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/11/27/高性能代码笔记/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/高性能JavaScript/">高性能JavaScript</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/11/27/gitnote/" title="GitNote" itemprop="url">GitNote</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-27T12:51:27.601Z" itemprop="datePublished"> 发表于 2015-11-27</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>git工作区以及常用命令</p>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/11/27/gitnote/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/Git/">Git</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/11/27/tween算法及应用/" title="tween算法及应用——原生时间版运动" itemprop="url">tween算法及应用——原生时间版运动</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-27T12:46:59.805Z" itemprop="datePublished"> 发表于 2015-11-27</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>主要展示tween算法、运用它实现原生时间版运动并且比较速度版和时间版之间的差别，再谈谈运动中的一些问题。</p>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/11/27/tween算法及应用/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/算法/">算法</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/11/27/弹性运动及笔记/" title="弹性运动 碰撞运动" itemprop="url">弹性运动 碰撞运动</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-27T12:46:40.397Z" itemprop="datePublished"> 发表于 2015-11-27</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>谈谈JavaScript中的运动，主要包括加速运动、弹性运动、和带摩擦的弹性运动、碰撞运动以及加入重力运动。</p>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/11/27/弹性运动及笔记/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/js中的运动/">js中的运动</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/2015/11/27/返回顶部demo/" title="返回顶部小案例" itemprop="url">返回顶部小案例</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
-		
-  <p class="article-time">
-    <time datetime="2015-11-27T12:46:05.581Z" itemprop="datePublished"> 发表于 2015-11-27</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <blockquote>
-<p>该demo与众不同之处在于能够实现返回顶部过程中，拽住滚动条就不会继续向顶部滚动。</p>
-</blockquote>
-        
-        
-        <p class="article-more-link">
-          
-            <a href="/2015/11/27/返回顶部demo/#more">Read More</a>
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-<div class="article-categories">
-  <span></span>
-  <a class="article-category-link" href="/categories/demo/">demo</a>
-</div>
-
-
-</div>
-
-
-
-
-<div class="comments-count">
-	
-</div>
-
-</footer>
-
-
-    </article>
-
-
-
-
-
-
-
-</div>
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-Object-defineProperty()"><span class="toc-number">1.</span> <span class="toc-text">1.Object.defineProperty()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_Object-defineProperties()方法"><span class="toc-number">2.</span> <span class="toc-text">2. Object.defineProperties()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-Object-getOwnPropertyDescriptor()方法"><span class="toc-number">3.</span> <span class="toc-text">3.Object.getOwnPropertyDescriptor()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-_Object-isPrototypeOf()"><span class="toc-number">4.</span> <span class="toc-text">4. Object.isPrototypeOf()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-_Object-getPrototypeOf()"><span class="toc-number">5.</span> <span class="toc-text">5. Object.getPrototypeOf()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-_Object-hasOwnProperty()"><span class="toc-number">6.</span> <span class="toc-text">6. Object.hasOwnProperty()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-_Object-keys()方法"><span class="toc-number">7.</span> <span class="toc-text">7. Object.keys()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Object-getOwnPropertyNames()方法。"><span class="toc-number">8.</span> <span class="toc-text">8.Object.getOwnPropertyNames()方法。</span></a></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
@@ -794,12 +355,89 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
 
 
 
@@ -865,4 +503,4 @@ document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3
 <!-- Tiny_search End -->
 
   </body>
- </html>
+</html>
