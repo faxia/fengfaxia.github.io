@@ -1,0 +1,505 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>语法作用域 | fengfaxia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="fengfaxia">
+    
+
+    <meta name="keywords" content="语法作用域,效果">
+    <meta name="description" content="语法作用域及其效果详解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="语法作用域">
+<meta property="og:url" content="http://yoursite.com/2015/12/08/语法作用域/index.html">
+<meta property="og:site_name" content="fengfaxia">
+<meta property="og:description" content="语法作用域及其效果详解">
+<meta property="og:image" content="http://i12.tietuku.com/8626f254b963d24b.png">
+<meta property="og:updated_time" content="2015-12-08T12:29:57.777Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="语法作用域">
+<meta name="twitter:description" content="语法作用域及其效果详解">
+
+    
+    <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="fengfaxia" title="fengfaxia"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="fengfaxia">fengfaxia</a></h1>
+				<h2 class="blog-motto">拥抱变化</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home | 主页</a></li>
+					
+						<li><a href="/archives">Archives | 文章</a></li>
+					
+						<li><a href="/about">About | 关于我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/12/08/语法作用域/" title="语法作用域" itemprop="url">语法作用域</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-08T12:29:57.777Z" itemprop="datePublished"> 发表于 2015-12-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#主要的语法作用域及其效果"><span class="toc-number">1.</span> <span class="toc-text">主要的语法作用域及其效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语法作用域之间的相关性"><span class="toc-number">2.</span> <span class="toc-text">语法作用域之间的相关性</span></a></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p>今天看完周爱民的《JavaScript语言精髓与编程实践》中的模块化层次:语法作用域，感觉写的特别好，有必要记下这精彩的一刻。正文从这里开始。<br>  语法作用域:指变量或成员的可见性，这个可见性的区间，则依赖于语法陈述。<br>  作用域:包括语法作用域和变量作用域两个部分，这篇文章主要谈谈语法作用域，变量作用域可以在下一篇“模块化的效果:变量作用域”谈及。</p>
+</blockquote>
+ <a id="more"></a>
+<h3 id="主要的语法作用域及其效果">主要的语法作用域及其效果</h3><p>  先上语法作用域的图吧<br>  <img src="http://i12.tietuku.com/8626f254b963d24b.png" alt=""><br>  从表面上来看，“批语句”与“语句”作用域的不同之处，在于前者的语法中有一对大括号。因此你可能或说：一般的语句也可以有大括号呀？是的，例如width或if等语句的大多数用法中，看起来也是在限制一批语句，但事实上却是限制一个“复合语句”。</p>
+  <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//示例1：单一语句</span></span><br><span class="line">label1:</span><br><span class="line">	<span class="variable"><span class="keyword">var</span> value1</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable"><span class="keyword">var</span> value2</span> = <span class="number">100</span>;</span><br><span class="line"><span class="comment">//示例2：复合语句</span></span><br><span class="line">label2:</span><br><span class="line">	<span class="variable"><span class="keyword">var</span> value3</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable"><span class="keyword">var</span> value4</span> = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<p>  由于在示例1中label1只作用于单一语句，因此第4行代码事实上没有被任何标签限定。而相应的，label2则将7~10行代码声明为一个标签化语句。所以，无论标签语句限定的是单行语句还是复合语句，它的语法域都只是“语句”。</p>
+<p>  相比之下，“批语句作用域”就略有差异。虽然它们也用一对大括号“{}”来声明被影响的代码，<strong>但是一定不能将这个大括号理解为“复合语句的语法标识符”。简单地区别二者的方法，是尝试将“大括号表示的语句”替换为“单行语句”或“空语句”。</strong>例如下面的代码1和代码2可以相互置换，<strong>因此if语句中的大括号被用做表示“复合语句”</strong>：</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//代码1</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) i += <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//代码2</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line"> i += <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  而下面的示例中，大括号是语法结构的一部分，替换后导致出粗。<strong>因此try语句中的大括号是用来表示“批语句”这样一个作用域</strong></p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//代码1:结构化异常处理的语法</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  i += <span class="number">2</span>；</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(e) &#123;</span><br><span class="line"> <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//代码2:导致语法分析错</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">i += <span class="number">2</span>; <span class="comment">//错误1:试图替换为单行语句</span></span><br><span class="line"><span class="keyword">catch</span> (e); <span class="comment">//试图替换为空语句</span></span><br></pre></td></tr></table></figure>
+<p>  除了上线列举的try…语句之外，同样也具有“批处理语法作用域”的是switch语句。我们可以写出：</p>
+  <figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (<span class="literal">true</span>) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  这样没有任何分支的代码，却不能省略大括号使它变成:<br>  ` switch (true);<br>  这会导致语法分析错误。但是，switch语言中的case子句的语法产生了很多的误解。先陈述两个观点。<br>  <strong><br>  1.case分支使switch内的代码形成了局部的分块，但是这只是开发人员的主观行为，而不是语法效果。或者说，它是开发人员视觉上的“代码块”，而不是JavaScript语法概念上的某种作用域。<br>  2.break语句的含义是跳出switch语句，而非跳出某个case分支。
+  </strong></p>
+<p>  先看看第一个观点，我们一般习惯性地将case分支的代码写成如下格式:</p>
+  <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">switch</span> (b) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="literal">true</span>: &#123;</span><br><span class="line">  <span class="comment">//....</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">case</span> <span class="literal">false</span>: &#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  这看起来使得switch()内部形成了“代码块”的效果，所以我们也会习惯性地将case后面的一个代码块理解为该分支影响的一个部分。事实上在JavaScript中，case子句所影响的只是其后的一个语句。准确说，他只是标识其后的一行代码的“起始位置”。对于整个switch语句来说，下面的代码是它的<strong>“语法作用域”所影响的范围:</strong></p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (b) &#123;</span><br><span class="line">  i := i + <span class="number">1</span>;</span><br><span class="line">  j := j + <span class="number">1</span>;</span><br><span class="line">  j := j + <span class="number">1</span>;</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  <strong>而case语句只是在这个范围内做了一些标识，以提示一个“起始位置”，而没有语法作用域所必需的“结束位置”的含义。</strong>因此够成了下面的语法：</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (b) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="literal">true</span>: i := i + <span class="number">1</span>;<span class="comment">//标识该行的起始位置</span></span><br><span class="line">           j := j + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="literal">false</span>: j := j + <span class="number">1</span>;<span class="comment">//标识该行的起始位置</span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  所以在JavaScript的语法概念上，case分支后是没有“作用域”这样的东西的，有的只是一行代码。</p>
+<p>  第二个观点也就是break子句的效果。由于case子句没有“作用域”的含义，所指示的也仅是其后一个语句的起始位置，<strong>因此break子句事实上也并不对case子句启到语法效果。</strong>来看看下面的代码:</p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (b) &#123;</span><br><span class="line">   <span class="keyword">case</span> <span class="literal">true</span>: &#123;</span><br><span class="line">           i: = i + <span class="number">1</span>;</span><br><span class="line">           j: = j + <span class="number">1</span>;</span><br><span class="line">           <span class="keyword">break</span>; <span class="comment">//12行起作用</span></span><br><span class="line">       &#125;</span><br><span class="line">   <span class="keyword">case</span> <span class="literal">false</span>: &#123;</span><br><span class="line">           j: = j + <span class="number">1</span>;</span><br><span class="line">           <span class="keyword">break</span>; <span class="comment">//12行起作用</span></span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">//...</span></span><br></pre></td></tr></table></figure>
+<p>  上面代码中有两个break。而两个break子句的语义都是跳出switch所限制的“语法作用域”，<strong>而不是它们各自所在的case分支的“视觉效果上的‘代码块’”</strong></p>
+<p>  补充一点，case分支是标签化语句的特例。这种说法貌似有合理之处:二者都对其后的一行语句起作用，并且标识该语句的所在的位置。但是，<strong>在考虑break子句的效果的情况下，我们不能将case分支与标签等同起来，因为break可以作用域标签化语句，但却并不能作用于case分支。</strong></p>
+<h3 id="语法作用域之间的相关性">语法作用域之间的相关性</h3><p>  语法作用域之间的相关性主要是通过“语法作用域级别”来控制的。具体说有下面三点：<br>  1.相同级别的语法作用域可以相互嵌套。<br>  2.高级别的语法作用域 <strong>能够</strong> 包含低级别的语法作用域。<br>  3.低级别的语法作用域 <strong>不能</strong> 包含高级别的语法作用域。由于不存在包含关系，因此语法实现时，一般处理成语法上的违例，或者理解为“平行”的关系。</p>
+<p>  最后总结一下上面所说的内容，首先怎样区分“批语句”和“语句”作用域？简单的区别方法，是尝试将“{}表示的语句”替换为“单行语句”或“空语句”，如果去掉没有出错那么就是复合语句，反之是“批语句”。接着解释了switch语言中的case子句以及break子句的语法作用效果。然后补充了在考略break子句的效果情况下，不能将case分支与标签等同起来，因为break可以作用于标签化语句，但是不能作用于case语句。最后谈了“语法作用域级别”的三个规则。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/笔记/">笔记</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2015/12/08/语法作用域/" data-title="语法作用域 | fengfaxia" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/12/02/Object部分方法汇总分析/"  title="Object 部分方法总结及使用详解">
+ <strong>下一篇：</strong><br/> 
+ <span>Object 部分方法总结及使用详解
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#主要的语法作用域及其效果"><span class="toc-number">1.</span> <span class="toc-text">主要的语法作用域及其效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语法作用域之间的相关性"><span class="toc-number">2.</span> <span class="toc-text">语法作用域之间的相关性</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="fengfaxia" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/demo/" title="demo">demo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/js中的运动/" title="js中的运动">js中的运动<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔记/" title="笔记">笔记<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/问题总结/" title="问题总结">问题总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/高性能JavaScript/" title="高性能JavaScript">高性能JavaScript<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fengfaxia.github.io/" target="_blank" title="fengfaxia&#39;log">fengfaxia&#39;log</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="200" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=200&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=5448337646&verifier=9928f154&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m fengfaxia,love of learning <br/>
+			This is my blog,learn form each other.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5448337646" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/fengfaxia" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/about" target="_blank" title="fengfaxia">fengfaxia</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe6d1f421bbc9962127a50488f9ed37d1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
