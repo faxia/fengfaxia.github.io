@@ -1,0 +1,504 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>模块化的效果:变量作用域 | fengfaxia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="fengfaxia">
+    
+
+    <meta name="keywords" content="变量,作用域,级别,全局,局部">
+    <meta name="description" content="变量作用域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模块化的效果:变量作用域">
+<meta property="og:url" content="http://yoursite.com/2015/12/09/模块化效果之变量作用域/index.html">
+<meta property="og:site_name" content="fengfaxia">
+<meta property="og:description" content="变量作用域">
+<meta property="og:updated_time" content="2015-12-09T04:42:28.975Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="模块化的效果:变量作用域">
+<meta name="twitter:description" content="变量作用域">
+
+    
+    <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="fengfaxia" title="fengfaxia"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="fengfaxia">fengfaxia</a></h1>
+				<h2 class="blog-motto">拥抱变化</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home | 主页</a></li>
+					
+						<li><a href="/archives">Archives | 文章</a></li>
+					
+						<li><a href="/about">About | 关于我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2015/12/09/模块化效果之变量作用域/" title="模块化的效果:变量作用域" itemprop="url">模块化的效果:变量作用域</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
+		
+  <p class="article-time">
+    <time datetime="2015-12-09T04:42:28.975Z" itemprop="datePublished"> 发表于 2015-12-09</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#级别1：表达式"><span class="toc-number">1.</span> <span class="toc-text">级别1：表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#级别2:语句"><span class="toc-number">2.</span> <span class="toc-text">级别2:语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#级别3:函数(局部)"><span class="toc-number">3.</span> <span class="toc-text">级别3:函数(局部)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#级别4:全局"><span class="toc-number">4.</span> <span class="toc-text">级别4:全局</span></a></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p> 变量作用域一直困扰着我，上一篇学习了语法作用域，这一篇接着学习变量作用域。<br>变量作用域又叫变量的可见性。在周爱民看来:“语法作用域讨论代码组织结构上的抽象，讨论的是‘圈地’的问题；而变量的作用域完成对信息的隐蔽，也就是处理‘割据’问题。前者是形式上的规范，后者是实际的占有。”我觉得这样比喻很容易让人理解。<br>例如:</p>
+</blockquote>
+ <a id="more"></a> 
+ <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">with</span> (obj) &#123; <span class="comment">//依赖语法作用域的限定</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">foo2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			value *= <span class="number">2</span>; <span class="comment">//依赖变量作用域的存取</span></span><br><span class="line">		&#125;</span><br><span class="line">		foo();</span><br><span class="line">	&#125;</span><br><span class="line">	foo2();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  &#160; &#160; &#160; &#160;with 语句不能限定到第4行对value值的存取，其真实的愿意在于with语句的作用域是“语法作用域”，限定对象为“语句”；而第4行是一个代码块执行过程中对变量的存取，它受限与“变量作用域”。</p>
+<p>  &#160; &#160; &#160; &#160;<strong>“语法作用域”与“变量作用域”二者之间的区别，在于前者是语法分析阶段对代码块组织结构的理解，后者是代码执行阶段对变量存储的理解。</strong>正如圈地与割据并不是定义的，我们可以将一个区域划分为9块却其中6块有人占领，程序设计语言中就存在这种情况。JavaScript划分出了它的4个语法作用域：表达式、语句、函数和全局。但在变量作用域上，并没有“语句”这个级别。</p>
+<p> 下面从4个语法作用域：表达式、语句、函数和全局这四个级别谈谈变量作用域。</p>
+<h3 id="级别1：表达式">级别1：表达式</h3><p>  &#160; &#160; &#160; &#160;直接量是一种表达式级别的量(数据)，但是我们通常会把它归类到“常量”这个范围中去。由于有了“常量”的概念，因此我们无法讨论某个“直接量”的可见性是在这里或是那里，因为哪里都可以使用常量。因此在“表达式级别上的变量作用域”的话题上，不讨论以“常量”形式存在的一些直接量。例如字符串“abcd”和布尔值true的变量作用域。</p>
+<p>  &#160; &#160; &#160; &#160;在JavaScript中表达式级别的变量都是匿名的。这通常指针对直接量或匿名函数，此外也包括一些函数中返回的匿名的值或应用类型的数据。</p>
+<h3 id="级别2:语句">级别2:语句</h3><p>  &#160; &#160; &#160; &#160;前面有说道在变量作用域上，并没有“语句”这个级别。把我们来看看为什么呢？<br>  &#160; &#160; &#160; &#160;首先弄清楚某个变量存在语句级别的作用域指什么？指它(这里包括对象和直接量等的一个可运算对象)被创建出来之后，在脱离了创生它的一个(单个或连续的)表达式之后，<strong>仅在所在语句的作用域中被访问。</strong>也就是说在语句的作用域之外被访问到，说明语句级别的变量作用域<br> 这段话读一遍确实不能够理解(ps:我读了3遍)，那我们来看看例子:</p>
+ <figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//语法规则:下面的变量是循环中的变量，在循环结束后不能访问</span></span><br><span class="line">for <span class="comment">(var i = 0; i &lt; 10;i++)</span> &#123;</span><br><span class="line"> <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//下面的代码不能访问</span></span><br><span class="line">alert<span class="comment">(i)</span>;</span><br></pre></td></tr></table></figure>
+<p>  &#160; &#160; &#160; &#160;在这个例子中，JavaScript会弹出10，而在C#或java中，上面测试代码会在编译期就通不过，在最后一行提示变量i未声明。因此在C#或java语言存在一种“语句”级别的变量作用域。但是JavaScript在所在语句之外能够访问，<em>*说明</em>JavaScript没有“语句”级别的变量作用域*</p>
+<h3 id="级别3:函数(局部)">级别3:函数(局部)</h3><p>  &#160; &#160; &#160; &#160;函数可以被嵌套，又可以“函数”级别的变量作用域。因此事实上可以看到:在多重嵌套的函数中，内一级的变量不会“逸出”到外一级，如下例所示:</p>
+ <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> a1 = <span class="number">10</span>;</span><br><span class="line">	<span class="comment">//代码段1</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">foo2</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">var</span> a2 = <span class="number">100</span>;</span><br><span class="line">		<span class="comment">//代码段2</span></span><br><span class="line"></span><br><span class="line">		<span class="function"><span class="keyword">function</span> <span class="title">foo3</span><span class="params">()</span> </span>&#123;</span><br><span class="line">			<span class="keyword">var</span> a3 = <span class="number">1000</span>;</span><br><span class="line">			<span class="comment">//代码段3</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> &#160; &#160; &#160; &#160;在这里，代码段1不能访问到代码段2中的变量a2和代码段3中的a3,是因为它们处在各自的(函数级的)变量作用域中。相对foo()来说，foo2()和foo3()都是局部，而局部不能访问全局的信息，是信息分层和信息屏蔽的重要原则。<strong>但同样的嵌套结构，在循环(或其他语句)中可以访问内层的变量。</strong>，但是前面解释过:在语句这个级别的“语法作用域”上，没有相应的“变量作用域”。因此得出两条结论：</p>
+<p> 1.语法作用域不等于变量作用域。</p>
+<p> 2.变量的可见性受限于它所在的语法结构的作用域(如果没有实现相应的变量作用域，那么该变量的可见性会逸出到同级的其他结构中去)。</p>
+<h3 id="级别4:全局">级别4:全局</h3><p>  &#160; &#160; &#160; &#160;从大型项目的角度来看，项目整体的品质比代码局部的灵活性更为重要，因此JavaScript以下的两项特性是不利于大型项目的开发:<br> 1.在全局范围内任意声明变量，尤其在全局范围内使用for循环同时声明变量。<br> 2.在函数内部不使用var声明而直接对一个变量名赋值时，该变量会隐式地在全局声明或读写到一个全局的变量。</p>
+<p> &#160; &#160; &#160; &#160;全局变量的作用域可以解释为JavaScript中的Global对象的成员，也可以被解释成宿主对象(例如浏览器中的window)的成员，还可以被解释成单独处理的全局函数。这些取决于不同的宿主程序或脚本程序的处理。然而<strong>IE浏览器中的JavaScript引擎对这一点的处理存在弊病</strong>，来看个例子:</p>
+ <figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> <span class="keyword">value</span> = <span class="number">100</span>;</span><br><span class="line"></span><br><span class="line">//全局变量在<span class="keyword">window</span>的成员列表中</span><br><span class="line">alert(<span class="string">'value'</span> <span class="keyword">in</span> <span class="keyword">window</span>,<span class="string">'&lt;BR&gt;'</span>);</span><br><span class="line"></span><br><span class="line">//显示<span class="literal">true</span>,表示成功清除该全局变量，</span><br><span class="line">//但事实上它仍然在<span class="keyword">window</span>的成员列表中。</span><br><span class="line">alert(<span class="keyword">delete</span> <span class="keyword">value</span>);</span><br><span class="line"></span><br><span class="line">//由于条件为真，所以下面的代码试图存取<span class="keyword">value</span>，但将导致错误</span><br><span class="line"><span class="keyword">if</span> (<span class="string">'value'</span> <span class="keyword">in</span> <span class="keyword">window</span>) &#123;</span><br><span class="line">	document.writeln(<span class="string">'bug test: '</span>,value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>  &#160; &#160; &#160; &#160;                      这个问题出在浏览器将全局变量处理为宿主对象(window)的成员，而在delete运算(该运算有引擎而非宿主实现的)时没有同时处理它。在Firefox浏览器中，就没有这个错误。</p>
+<p> &#160; &#160; &#160; &#160;但接下来仍然有问题。<strong>因为JavaScript规定delete不能够删除使用var显示声明的变量。</strong><br> 将代码中的</p>
+ <figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">value</span> = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<p> 该成:</p>
+ <figure class="highlight cs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> <span class="keyword">value</span> = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
+<p> 则 delete运算就会返回false，不过value也无法从widow的成员列表中清除。</p>
+<p> &#160; &#160; &#160; &#160;上面这个例子说的意思是:尽管在全局变量作用域中变量使用var声明，以及函数作用域中不使用var声明而产生的全局变量，二者都是全局变量，但它们的处理规则仍然是不尽相同。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/笔记/">笔记</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2015/12/09/模块化效果之变量作用域/" data-title="模块化的效果:变量作用域 | fengfaxia" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2015/12/09/语法作用域/"  title="语法作用域">
+ <strong>下一篇：</strong><br/> 
+ <span>语法作用域
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#级别1：表达式"><span class="toc-number">1.</span> <span class="toc-text">级别1：表达式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#级别2:语句"><span class="toc-number">2.</span> <span class="toc-text">级别2:语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#级别3:函数(局部)"><span class="toc-number">3.</span> <span class="toc-text">级别3:函数(局部)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#级别4:全局"><span class="toc-number">4.</span> <span class="toc-text">级别4:全局</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="fengfaxia" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/demo/" title="demo">demo<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/js中的运动/" title="js中的运动">js中的运动<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔记/" title="笔记">笔记<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/问题总结/" title="问题总结">问题总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/高性能JavaScript/" title="高性能JavaScript">高性能JavaScript<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fengfaxia.github.io/" target="_blank" title="fengfaxia&#39;log">fengfaxia&#39;log</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="200" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=200&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=5448337646&verifier=9928f154&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m fengfaxia,love of learning <br/>
+			This is my blog,learn form each other.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5448337646" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/fengfaxia" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/about" target="_blank" title="fengfaxia">fengfaxia</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe6d1f421bbc9962127a50488f9ed37d1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

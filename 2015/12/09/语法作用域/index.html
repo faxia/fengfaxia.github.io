@@ -14,11 +14,11 @@
     <meta name="description" content="语法作用域及其效果详解">
 <meta property="og:type" content="article">
 <meta property="og:title" content="语法作用域">
-<meta property="og:url" content="http://yoursite.com/2015/12/08/语法作用域/index.html">
+<meta property="og:url" content="http://yoursite.com/2015/12/09/语法作用域/index.html">
 <meta property="og:site_name" content="fengfaxia">
 <meta property="og:description" content="语法作用域及其效果详解">
 <meta property="og:image" content="http://i12.tietuku.com/8626f254b963d24b.png">
-<meta property="og:updated_time" content="2015-12-08T12:29:57.777Z">
+<meta property="og:updated_time" content="2015-12-09T04:35:11.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="语法作用域">
 <meta name="twitter:description" content="语法作用域及其效果详解">
@@ -81,14 +81,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2015/12/08/语法作用域/" title="语法作用域" itemprop="url">语法作用域</a>
+      <a href="/2015/12/09/语法作用域/" title="语法作用域" itemprop="url">语法作用域</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
 		
   <p class="article-time">
-    <time datetime="2015-12-08T12:29:57.777Z" itemprop="datePublished"> 发表于 2015-12-08</time>
+    <time datetime="2015-12-09T04:35:11.845Z" itemprop="datePublished"> 发表于 2015-12-09</time>
     
   </p>
 </header>
@@ -105,30 +105,36 @@
 <p>今天看完周爱民的《JavaScript语言精髓与编程实践》中的模块化层次:语法作用域，感觉写的特别好，有必要记下这精彩的一刻。正文从这里开始。<br>  语法作用域:指变量或成员的可见性，这个可见性的区间，则依赖于语法陈述。<br>  作用域:包括语法作用域和变量作用域两个部分，这篇文章主要谈谈语法作用域，变量作用域可以在下一篇“模块化的效果:变量作用域”谈及。</p>
 </blockquote>
  <a id="more"></a>
-<h3 id="主要的语法作用域及其效果">主要的语法作用域及其效果</h3><p>  先上语法作用域的图吧<br>  <img src="http://i12.tietuku.com/8626f254b963d24b.png" alt=""><br>  从表面上来看，“批语句”与“语句”作用域的不同之处，在于前者的语法中有一对大括号。因此你可能或说：一般的语句也可以有大括号呀？是的，例如width或if等语句的大多数用法中，看起来也是在限制一批语句，但事实上却是限制一个“复合语句”。</p>
+<h3 id="主要的语法作用域及其效果">主要的语法作用域及其效果</h3><p>  先上语法作用域的图吧<br>  <img src="http://i12.tietuku.com/8626f254b963d24b.png" alt=""><br>   &#160; &#160; &#160; &#160;从表面上来看，“批语句”与“语句”作用域的不同之处，在于前者的语法中有一对大括号。因此你可能或说：一般的语句也可以有大括号呀？是的，例如width或if等语句的大多数用法中，看起来也是在限制一批语句，但事实上却是限制一个“复合语句”。</p>
   <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//示例1：单一语句</span></span><br><span class="line">label1:</span><br><span class="line">	<span class="variable"><span class="keyword">var</span> value1</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable"><span class="keyword">var</span> value2</span> = <span class="number">100</span>;</span><br><span class="line"><span class="comment">//示例2：复合语句</span></span><br><span class="line">label2:</span><br><span class="line">	<span class="variable"><span class="keyword">var</span> value3</span> = <span class="number">10</span>;</span><br><span class="line">	<span class="variable"><span class="keyword">var</span> value4</span> = <span class="number">100</span>;</span><br></pre></td></tr></table></figure>
-<p>  由于在示例1中label1只作用于单一语句，因此第4行代码事实上没有被任何标签限定。而相应的，label2则将7~10行代码声明为一个标签化语句。所以，无论标签语句限定的是单行语句还是复合语句，它的语法域都只是“语句”。</p>
-<p>  相比之下，“批语句作用域”就略有差异。虽然它们也用一对大括号“{}”来声明被影响的代码，<strong>但是一定不能将这个大括号理解为“复合语句的语法标识符”。简单地区别二者的方法，是尝试将“大括号表示的语句”替换为“单行语句”或“空语句”。</strong>例如下面的代码1和代码2可以相互置换，<strong>因此if语句中的大括号被用做表示“复合语句”</strong>：</p>
+<p>   &#160; &#160; &#160; &#160;由于在示例1中label1只作用于单一语句，因此第4行代码事实上没有被任何标签限定。而相应的，label2则将7~10行代码声明为一个标签化语句。所以，无论标签语句限定的是单行语句还是复合语句，它的语法域都只是“语句”。</p>
+<p>   &#160; &#160; &#160; &#160;相比之下，“批语句作用域”就略有差异。虽然它们也用一对大括号“{}”来声明被影响的代码，<strong>但是一定不能将这个大括号理解为“复合语句的语法标识符”。简单地区别二者的方法，是尝试将“大括号表示的语句”替换为“单行语句”或“空语句”。</strong>例如下面的代码1和代码2可以相互置换，<strong>因此if语句中的大括号被用做表示“复合语句”</strong>：</p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//代码1</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) i += <span class="number">2</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//代码2</span></span><br><span class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line"> i += <span class="number">2</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>  而下面的示例中，大括号是语法结构的一部分，替换后导致出粗。<strong>因此try语句中的大括号是用来表示“批语句”这样一个作用域</strong></p>
+<p>   &#160; &#160; &#160; &#160;而下面的示例中，大括号是语法结构的一部分，替换后导致出粗。<strong>因此try语句中的大括号是用来表示“批语句”这样一个作用域</strong></p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">//代码1:结构化异常处理的语法</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">  i += <span class="number">2</span>；</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">catch</span>(e) &#123;</span><br><span class="line"> <span class="comment">//...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//代码2:导致语法分析错</span></span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">i += <span class="number">2</span>; <span class="comment">//错误1:试图替换为单行语句</span></span><br><span class="line"><span class="keyword">catch</span> (e); <span class="comment">//试图替换为空语句</span></span><br></pre></td></tr></table></figure>
 <p>  除了上线列举的try…语句之外，同样也具有“批处理语法作用域”的是switch语句。我们可以写出：</p>
   <figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (<span class="literal">true</span>) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>  这样没有任何分支的代码，却不能省略大括号使它变成:<br>  ` switch (true);<br>  这会导致语法分析错误。但是，switch语言中的case子句的语法产生了很多的误解。先陈述两个观点。<br>  <strong><br>  1.case分支使switch内的代码形成了局部的分块，但是这只是开发人员的主观行为，而不是语法效果。或者说，它是开发人员视觉上的“代码块”，而不是JavaScript语法概念上的某种作用域。<br>  2.break语句的含义是跳出switch语句，而非跳出某个case分支。
-  </strong></p>
+<p>  这样没有任何分支的代码，却不能省略大括号使它变成:</p>
+  <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (<span class="literal">true</span>);</span><br></pre></td></tr></table></figure>
+<p>  这会导致语法分析错误。但是，switch语言中的case子句的语法产生了很多的误解。先陈述两个观点。</p>
+<p>  1.case分支使switch内的代码形成了局部的分块，但是这只是开发人员的主观行为，而不是语法效果。或者说，它是开发人员视觉上的“代码块”，而不是JavaScript语法概念上的某种作用域。</p>
+<p>  2.break语句的含义是跳出switch语句，而非跳出某个case分支。</p>
 <p>  先看看第一个观点，我们一般习惯性地将case分支的代码写成如下格式:</p>
   <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">switch</span> (b) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="literal">true</span>: &#123;</span><br><span class="line">  <span class="comment">//....</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">case</span> <span class="literal">false</span>: &#123;</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>  这看起来使得switch()内部形成了“代码块”的效果，所以我们也会习惯性地将case后面的一个代码块理解为该分支影响的一个部分。事实上在JavaScript中，case子句所影响的只是其后的一个语句。准确说，他只是标识其后的一行代码的“起始位置”。对于整个switch语句来说，下面的代码是它的<strong>“语法作用域”所影响的范围:</strong></p>
+<p>   &#160; &#160; &#160; &#160;这看起来使得switch()内部形成了“代码块”的效果，所以我们也会习惯性地将case后面的一个代码块理解为该分支影响的一个部分。事实上在JavaScript中，case子句所影响的只是其后的一个语句。准确说，他只是标识其后的一行代码的“起始位置”。对于整个switch语句来说，下面的代码是它的<strong>“语法作用域”所影响的范围:</strong></p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (b) &#123;</span><br><span class="line">  i := i + <span class="number">1</span>;</span><br><span class="line">  j := j + <span class="number">1</span>;</span><br><span class="line">  j := j + <span class="number">1</span>;</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>  <strong>而case语句只是在这个范围内做了一些标识，以提示一个“起始位置”，而没有语法作用域所必需的“结束位置”的含义。</strong>因此够成了下面的语法：</p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (b) &#123;</span><br><span class="line">  <span class="keyword">case</span> <span class="literal">true</span>: i := i + <span class="number">1</span>;<span class="comment">//标识该行的起始位置</span></span><br><span class="line">           j := j + <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">case</span> <span class="literal">false</span>: j := j + <span class="number">1</span>;<span class="comment">//标识该行的起始位置</span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>  所以在JavaScript的语法概念上，case分支后是没有“作用域”这样的东西的，有的只是一行代码。</p>
-<p>  第二个观点也就是break子句的效果。由于case子句没有“作用域”的含义，所指示的也仅是其后一个语句的起始位置，<strong>因此break子句事实上也并不对case子句启到语法效果。</strong>来看看下面的代码:</p>
+<p>   &#160; &#160; &#160; &#160;所以在JavaScript的语法概念上，case分支后是没有“作用域”这样的东西的，有的只是一行代码。</p>
+<p>   &#160; &#160; &#160; &#160;第二个观点也就是break子句的效果。由于case子句没有“作用域”的含义，所指示的也仅是其后一个语句的起始位置，<strong>因此break子句事实上也并不对case子句启到语法效果。</strong>来看看下面的代码:</p>
   <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">switch</span> (b) &#123;</span><br><span class="line">   <span class="keyword">case</span> <span class="literal">true</span>: &#123;</span><br><span class="line">           i: = i + <span class="number">1</span>;</span><br><span class="line">           j: = j + <span class="number">1</span>;</span><br><span class="line">           <span class="keyword">break</span>; <span class="comment">//12行起作用</span></span><br><span class="line">       &#125;</span><br><span class="line">   <span class="keyword">case</span> <span class="literal">false</span>: &#123;</span><br><span class="line">           j: = j + <span class="number">1</span>;</span><br><span class="line">           <span class="keyword">break</span>; <span class="comment">//12行起作用</span></span><br><span class="line">       &#125;</span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">//...</span></span><br></pre></td></tr></table></figure>
-<p>  上面代码中有两个break。而两个break子句的语义都是跳出switch所限制的“语法作用域”，<strong>而不是它们各自所在的case分支的“视觉效果上的‘代码块’”</strong></p>
-<p>  补充一点，case分支是标签化语句的特例。这种说法貌似有合理之处:二者都对其后的一行语句起作用，并且标识该语句的所在的位置。但是，<strong>在考虑break子句的效果的情况下，我们不能将case分支与标签等同起来，因为break可以作用域标签化语句，但却并不能作用于case分支。</strong></p>
-<h3 id="语法作用域之间的相关性">语法作用域之间的相关性</h3><p>  语法作用域之间的相关性主要是通过“语法作用域级别”来控制的。具体说有下面三点：<br>  1.相同级别的语法作用域可以相互嵌套。<br>  2.高级别的语法作用域 <strong>能够</strong> 包含低级别的语法作用域。<br>  3.低级别的语法作用域 <strong>不能</strong> 包含高级别的语法作用域。由于不存在包含关系，因此语法实现时，一般处理成语法上的违例，或者理解为“平行”的关系。</p>
-<p>  最后总结一下上面所说的内容，首先怎样区分“批语句”和“语句”作用域？简单的区别方法，是尝试将“{}表示的语句”替换为“单行语句”或“空语句”，如果去掉没有出错那么就是复合语句，反之是“批语句”。接着解释了switch语言中的case子句以及break子句的语法作用效果。然后补充了在考略break子句的效果情况下，不能将case分支与标签等同起来，因为break可以作用于标签化语句，但是不能作用于case语句。最后谈了“语法作用域级别”的三个规则。</p>
+<p>   &#160; &#160; &#160; &#160;上面代码中有两个break。而两个break子句的语义都是跳出switch所限制的“语法作用域”，<strong>而不是它们各自所在的case分支的“视觉效果上的‘代码块’”</strong></p>
+<p>   &#160; &#160; &#160; &#160;补充一点，case分支是标签化语句的特例。这种说法貌似有合理之处:二者都对其后的一行语句起作用，并且标识该语句的所在的位置。但是，<strong>在考虑break子句的效果的情况下，我们不能将case分支与标签等同起来，因为break可以作用域标签化语句，但却并不能作用于case分支。</strong></p>
+<h3 id="语法作用域之间的相关性">语法作用域之间的相关性</h3><p>  语法作用域之间的相关性主要是通过“语法作用域级别”来控制的。具体说有下面三点：</p>
+<p>  1.相同级别的语法作用域可以相互嵌套。</p>
+<p>  2.高级别的语法作用域 <strong>能够</strong> 包含低级别的语法作用域。</p>
+<p>  3.低级别的语法作用域 <strong>不能</strong> 包含高级别的语法作用域。由于不存在包含关系，因此语法实现时，一般处理成语法上的违例，或者理解为“平行”的关系。</p>
+<p>  最后总结一下上面所说的内容:<br>    &#160; &#160; &#160; &#160;首先怎样区分“批语句”和“语句”作用域？简单的区别方法，是尝试将“{}表示的语句”替换为“单行语句”或“空语句”，如果去掉没有出错那么就是复合语句，反之是“批语句”。接着解释了switch语言中的case子句以及break子句的语法作用效果。然后补充了在考略break子句的效果情况下，不能将case分支与标签等同起来，因为break可以作用于标签化语句，但是不能作用于case语句。最后谈了“语法作用域级别”的三个规则。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -146,7 +152,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2015/12/08/语法作用域/" data-title="语法作用域 | fengfaxia" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2015/12/09/语法作用域/" data-title="语法作用域 | fengfaxia" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -159,6 +165,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2015/12/09/模块化效果之变量作用域/" title="模块化的效果:变量作用域">
+  <strong>上一篇：</strong><br/>
+  <span>
+  模块化的效果:变量作用域</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2015/12/02/Object部分方法汇总分析/"  title="Object 部分方法总结及使用详解">
@@ -213,7 +227,7 @@
 		  
 		
 		  
-			<li><a href="/categories/笔记/" title="笔记">笔记<sup>3</sup></a></li>
+			<li><a href="/categories/笔记/" title="笔记">笔记<sup>4</sup></a></li>
 		  
 		
 		  
