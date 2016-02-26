@@ -81,23 +81,20 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/02/26/数字比较/" title="8中方式实现:一个数n,当n小于100就返回n，否则就返回100" itemprop="url">8中方式实现:一个数n,当n小于100就返回n，否则就返回100</a>
+      <a href="/2016/02/26/数字比较/" title="8种方式实现:一个数n,当n小于100就返回n，否则就返回100" itemprop="url">8种方式实现:一个数n,当n小于100就返回n，否则就返回100</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
 		
   <p class="article-time">
-    <time datetime="2016-02-26T05:50:48.733Z" itemprop="datePublished"> 发表于 2016-02-26</time>
+    <time datetime="2016-02-26T05:54:22.176Z" itemprop="datePublished"> 发表于 2016-02-26</time>
     
   </p>
 </header>
     <div class="article-content">
         
         <p> 除了下面的方法，那还有没有其他方法呢？答案是肯定有的！</p>
-<h4 id="方法一:if语句">方法一:if语句</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">show</span><span class="params">(n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span>( n&lt;<span class="number">100</span> ) &#123;</span><br><span class="line">		<span class="keyword">return</span> n;</span><br><span class="line">	&#125;<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">100</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">console.<span class="built_in">log</span>(show(<span class="number">100</span>));</span><br></pre></td></tr></table></figure>
-<h4 id="方法二:Math-min()">方法二:Math.min()</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line"> 	<span class="keyword">return</span> <span class="built_in">Math</span>.min(n,<span class="number">100</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="built_in">console</span>.log(show(<span class="number">100</span>));</span><br></pre></td></tr></table></figure>
-<h4 id="方法三:数组的sort()">方法三:数组的sort()</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> arr = [n,<span class="number">100</span>];</span><br><span class="line">	arr.sort(<span class="function"><span class="keyword">function</span>(<span class="params">n1,n2</span>)</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> n1 - n2;</span><br><span class="line">	&#125;);</span><br><span class="line">	<span class="keyword">return</span> arr[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(show(<span class="number">80</span>));</span><br></pre></td></tr></table></figure>
         
         
         <p class="article-more-link">
