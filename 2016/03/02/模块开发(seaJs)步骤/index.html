@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="fengfaxia">
 <meta property="og:description" content="随着项目规模增大，团队人员增多，多人协作过程中命名冲突不可避免，虽然可以使用命 名空间来减少冲突发生，但是依然会发生，一旦发生了可以会让你很头疼。还有产品更新 换代块，模块之间相互依赖比较大，一旦某个文件名字改动或者添加了新文件件，手工修改 想想就知道是多么痛的领悟。因此模块开发变得十分重要。下面就来看看使用seaJs模块开发 框架的步骤吧！">
 <meta property="og:image" content="http://i11.tietuku.com/433c484aaa5f97b2.png">
-<meta property="og:updated_time" content="2016-03-02T07:35:00.649Z">
+<meta property="og:updated_time" content="2016-03-02T07:38:20.369Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="模块开发步骤">
 <meta name="twitter:description" content="随着项目规模增大，团队人员增多，多人协作过程中命名冲突不可避免，虽然可以使用命 名空间来减少冲突发生，但是依然会发生，一旦发生了可以会让你很头疼。还有产品更新 换代块，模块之间相互依赖比较大，一旦某个文件名字改动或者添加了新文件件，手工修改 想想就知道是多么痛的领悟。因此模块开发变得十分重要。下面就来看看使用seaJs模块开发 框架的步骤吧！">
@@ -88,7 +88,7 @@
 		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
 		
   <p class="article-time">
-    <time datetime="2016-03-02T07:35:00.649Z" itemprop="datePublished"> 发表于 2016-03-02</time>
+    <time datetime="2016-03-02T07:38:20.369Z" itemprop="datePublished"> 发表于 2016-03-02</time>
     
   </p>
 </header>
@@ -115,15 +115,11 @@
 
 这样可以有效的防止冲突并且成为seaJs下的一个模块。注意define(function(require,exports,module){});接受三个参数，
 并且三个参数的名字不可以随意修改
-</code></pre><h4 id="3-如何调用模块？">3.如何调用模块？</h4><pre><code><span class="xml">上面的模块已经是seaJs下的模块了，那么我们如何调用呢？确实，我也比较关心。答案是用exports和seajs.use
-
-你所看到的exports就是define函数里面的一个参数，是对外提供接口的对象，我们在define函数里面添加
+</code></pre><h4 id="3-如何调用模块？">3.如何调用模块？</h4><pre><code><span class="xml">上面的模块已经是seaJs下的模块了，那么我们如何调用呢？确实，我也比较关心。答案是用exports和seajs.use你所看到的exports就是define函数里面的一个参数，是对外提供接口的对象，我们在define函数里面添加
 exports.show = show;此时module1.js中的代码清单如下：
 <span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span><span class="params">(require,exports,module)</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		alert(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	exports.show = show;</span><br><span class="line">	&#125;);</span><br></pre></td></tr></table></figure></span>
 
-如果想在test.html中通过exports.show()调用，还的借助seajs.use('./js/module1.js',function(ex)</span><span class="expression">{}</span><span class="xml">);
-第一个参数是模块的地址(sea的默认根目录:sea.js这个文件,前面已经看过项目的结构,也就是sea文件。)，
-第二个参数:加载完后的回调函数。
+如果想在test.html中通过exports.show()调用，还的借助seajs.use('./js/module1.js',function(ex)</span><span class="expression">{}</span><span class="xml">);第一个参数是模块的地址(sea的默认根目录:sea.js这个文件,前面已经看过项目的结构,也就是sea文件。)，第二个参数:加载完后的回调函数。
 在test.html文件的代码<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>中代码如下所示:
 <span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">seajs.<span class="keyword">use</span>(<span class="string">'./js/module1.js'</span>,<span class="function"><span class="keyword">function</span><span class="params">(ex)</span></span>&#123;</span><br><span class="line"><span class="comment">//ex是随便定义的，代表exports</span></span><br><span class="line"></span><br><span class="line">	ex.show();  <span class="comment">//1	</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></span>
 
@@ -146,8 +142,7 @@ seajs.use('./js/module2.js',function(ex)</span><span class="expression">{
     }</span><span class="xml">
     show();//第四次定义show函数
 });</span>
-</code></pre><h4 id="4-如何依赖模块？">4.如何依赖模块？</h4><pre><code>那么问题又来了？如果想在模块之间相互访问怎么办呢？那就要借助require，模块之间依赖的接口。
-现在新建一个js文件命名为module3.js,就以module3.js和module2.js为例。
+</code></pre><h4 id="4-如何依赖模块？">4.如何依赖模块？</h4><pre><code>那么问题又来了？如果想在模块之间相互访问怎么办呢？那就要借助require，模块之间依赖的接口。现在新建一个js文件命名为module3.js,就以module3.js和module2.js为例。
 假如module2.js想访问module3.js中的变量值。
 module2.js代码清单如下：
 <span class="comment"><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params">require,exports,module</span>)</span>&#123; </span><br><span class="line">	<span class="comment">//require:模块之间依赖接口</span></span><br><span class="line">	<span class="comment">//exports:模块之间提供接口的对象 </span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">require</span>(<span class="string">'./module3.js'</span>);   </span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		alert(a);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	exports.show = show;</span><br><span class="line">	</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></span>
