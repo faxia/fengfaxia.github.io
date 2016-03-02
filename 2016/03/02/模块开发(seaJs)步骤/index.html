@@ -1,0 +1,549 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>模块开发步骤 | fengfaxia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="fengfaxia">
+    
+
+    
+    <meta name="description" content="随着项目规模增大，团队人员增多，多人协作过程中命名冲突不可避免，虽然可以使用命 名空间来减少冲突发生，但是依然会发生，一旦发生了可以会让你很头疼。还有产品更新 换代块，模块之间相互依赖比较大，一旦某个文件名字改动或者添加了新文件件，手工修改 想想就知道是多么痛的领悟。因此模块开发变得十分重要。下面就来看看使用seaJs模块开发 框架的步骤吧！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模块开发步骤">
+<meta property="og:url" content="http://yoursite.com/2016/03/02/模块开发(seaJs)步骤/index.html">
+<meta property="og:site_name" content="fengfaxia">
+<meta property="og:description" content="随着项目规模增大，团队人员增多，多人协作过程中命名冲突不可避免，虽然可以使用命 名空间来减少冲突发生，但是依然会发生，一旦发生了可以会让你很头疼。还有产品更新 换代块，模块之间相互依赖比较大，一旦某个文件名字改动或者添加了新文件件，手工修改 想想就知道是多么痛的领悟。因此模块开发变得十分重要。下面就来看看使用seaJs模块开发 框架的步骤吧！">
+<meta property="og:image" content="http://i11.tietuku.com/433c484aaa5f97b2.png">
+<meta property="og:updated_time" content="2016-03-02T07:10:21.914Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="模块开发步骤">
+<meta name="twitter:description" content="随着项目规模增大，团队人员增多，多人协作过程中命名冲突不可避免，虽然可以使用命 名空间来减少冲突发生，但是依然会发生，一旦发生了可以会让你很头疼。还有产品更新 换代块，模块之间相互依赖比较大，一旦某个文件名字改动或者添加了新文件件，手工修改 想想就知道是多么痛的领悟。因此模块开发变得十分重要。下面就来看看使用seaJs模块开发 框架的步骤吧！">
+
+    
+    <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="fengfaxia" title="fengfaxia"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="fengfaxia">fengfaxia</a></h1>
+				<h2 class="blog-motto">拥抱变化</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home | 主页</a></li>
+					
+						<li><a href="/archives">Archives | 文章</a></li>
+					
+						<li><a href="/about">About | 关于我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/02/模块开发(seaJs)步骤/" title="模块开发步骤" itemprop="url">模块开发步骤</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-02T07:10:21.914Z" itemprop="datePublished"> 发表于 2016-03-02</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-引入sea-js的库"><span class="toc-number">1.</span> <span class="toc-text">1.引入sea.js的库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-如何变成模块？"><span class="toc-number">2.</span> <span class="toc-text">2.如何变成模块？</span></a></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p>随着项目规模增大，团队人员增多，多人协作过程中命名冲突不可避免，虽然可以使用命<br> 名空间来减少冲突发生，但是依然会发生，一旦发生了可以会让你很头疼。还有产品更新<br> 换代块，模块之间相互依赖比较大，一旦某个文件名字改动或者添加了新文件件，手工修改<br> 想想就知道是多么痛的领悟。因此模块开发变得十分重要。下面就来看看使用seaJs模块开发<br> 框架的步骤吧！</p>
+</blockquote>
+ <a id="more"></a>
+<p> 下面就是模块开发的框架，下面的每一个步骤我都将用例子详细的说明<br>    1.引入sea.js的库<br>    2.如何变成模块？<br>        -define<br>    3.如何调用模块？<br>        -exports<br>        -seajs.use<br>    4.如何依赖模块？<br>        -require<br>    先看一下目录结构<br> <img src="http://i11.tietuku.com/433c484aaa5f97b2.png" alt="目录结构"></p>
+<h4 id="1-引入sea-js的库">1.引入sea.js的库</h4><p> 去<a href="http://seajs.org/docs/#downloads" title="seaJS" target="_blank" rel="external">官网</a>下载即可， 我下载的是 Sea.js 3.0.0版本。然后找到sea.js文件将其引入到你所对应的HTML代码中</p>
+<h4 id="2-如何变成模块？">2.如何变成模块？</h4><pre><code><span class="xml">首先我们看一下modules1.js下写一个普通的模块
+<span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	alert(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	alert(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></span>
+
+很显然这两个模块会发生冲突，那我们如何让其成为seaJs中的模块呢？如何有效的避免冲突呢？那就需要define，代码修改之后如下：
+<span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span><span class="params">(require,exports,module)</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		alert(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	&#125;);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	alert(<span class="number">2</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></span>
+
+这样可以有效的防止冲突并且成为seaJs下的一个模块。注意define(function(require,exports,module)</span><span class="expression">{}</span><span class="xml">);接受三个参数，并且三个参数的名字不可以随意修改
+
+#### 3.如何调用模块？
+上面的模块已经是seaJs下的模块了，那么我们如何调用呢？确实，我也比较关心。答案是用exports和seajs.use
+
+你所看到的exports就是define函数里面的一个参数，是**对外提供接口的对象**，我们在define函数里面添加exports.show = show;此时module1.js中的代码清单如下：
+<span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span><span class="params">(require,exports,module)</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		alert(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	exports.show = show;</span><br><span class="line">	&#125;);</span><br></pre></td></tr></table></figure></span>
+
+如果想在test.html中通过exports.show()调用，还的借助seajs.use('./js/module1.js',function(ex)</span><span class="expression">{}</span><span class="xml">);第一个参数是模块的地址(sea的默认根目录:sea.js这个文件,前面已经看过项目的结构,也就是sea文件。)，第二个参数:加载完后的回调函数。
+在test.html文件的代码<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>中代码如下所示:
+<span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">seajs.<span class="keyword">use</span>(<span class="string">'./js/module1.js'</span>,<span class="function"><span class="keyword">function</span><span class="params">(ex)</span></span>&#123;</span><br><span class="line"><span class="comment">//ex是随便定义的，代表exports</span></span><br><span class="line"></span><br><span class="line">	ex.show();  <span class="comment">//1	</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></span>
+
+上面就是在test.html中调用module1.js中的show()函数。目前只在module1.js中定义了一个show方法。如果你想在test.html定义一个show()函数不会发生冲突。代码如下：
+<span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">seajs.<span class="keyword">use</span>(<span class="string">'./js/module1.js'</span>,<span class="function"><span class="keyword">function</span><span class="params">(ex)</span></span>&#123;</span><br><span class="line"><span class="comment">//ex是随便定义的，代表exports</span></span><br><span class="line"></span><br><span class="line">	ex.show();  <span class="comment">//1	</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		alert(<span class="string">"第二次定义show函数"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	show();<span class="comment">//第二次定义show函数</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></span>
+
+如果只有两处定义同名函数还不足以证明消除冲突的威力。那么我们接着再瞧瞧！
+新建一个js文件命名为module2.js,在里面加入代码：
+<span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span><span class="params">(require,exports,module)</span></span>&#123;  </span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span></span>&#123;</span><br><span class="line">		alert(<span class="string">"第三次调用show"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	exports.show = show;</span><br><span class="line">	</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></span>
+
+然后将下面的代码增加到test.html的JavaScript代码中:
+seajs.use('./js/module2.js',function(ex)</span><span class="expression">{
+/<span class="end-block">/ex</span>是<span class="variable">module</span>2<span class="variable">.js</span>中的<span class="variable">exports</span>
+
+    <span class="variable">ex.show</span>();  //第三次定义<span class="variable">show</span>函数
+
+    <span class="variable">function</span> <span class="variable">show</span>() {
+        <span class="variable">alert</span>(<span class="string">"第四次定义show函数"</span>);
+    }</span><span class="xml">
+    show();//第四次定义show函数
+});
+
+#### 4.如何依赖模块？
+那么问题又来了？如果想在模块之间相互访问怎么办呢？那就要借助require，模块之间依赖的接口。现在新建一个js文件命名为module3.js,就以module3.js和module2.js为例。假如module2.js想访问module3.js中的变量值。module2.js代码清单如下：
+<span class="comment"><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params">require,exports,module</span>)</span>&#123; </span><br><span class="line">	<span class="comment">//require:模块之间依赖接口</span></span><br><span class="line">	<span class="comment">//exports:模块之间提供接口的对象 </span></span><br><span class="line"></span><br><span class="line">	<span class="built_in">require</span>(<span class="string">'./module3.js'</span>);   </span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		alert(a);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	exports.show = show;</span><br><span class="line">	</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></span>
+
+module3.js中的代码很简单，就是
+<span class="comment"><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable"><span class="keyword">var</span> a</span> = <span class="string">"我是模块3的变量"</span>;</span><br></pre></td></tr></table></figure></span>
+
+此时已经将module2.js和module3.js之间的依赖已经疏通好了，只差调用了，我们新建一个
+test2.html文件(请引入sea.js文件),<span class="tag">&lt;<span class="title">script</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span>代码清单如下:
+<span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">seajs.<span class="keyword">use</span>(<span class="string">'./js/module2.js'</span>,<span class="function"><span class="keyword">function</span><span class="params">(ex)</span> </span>&#123;	</span><br><span class="line"></span><br><span class="line">	ex.show();  <span class="comment">//我是模块3的变量</span></span><br><span class="line">	<span class="comment">//此时的100是module3.js中的a变量的值</span></span><br><span class="line"></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></span>
+
+那么你会接着问如果module3.js也是一个模块，而不是上面简单定义的一个变量呢？
+没问题，更新module3.js中的代码如下:
+<span class="comment"><figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span><span class="params">(<span class="keyword">require</span>,exports,<span class="keyword">module</span>)</span><span class="comment">&#123;</span><br><span class="line"></span><br><span class="line">	var a = "我是模块3的变量";</span><br><span class="line">	exports.a = a;</span><br><span class="line">	</span><br><span class="line">&#125;</span>);</span></span><br></pre></td></tr></table></figure></span>
+
+更新module2.js代码如下:
+<span class="comment"><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span>(<span class="params">require,exports,module</span>)</span>&#123;  </span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> a = <span class="built_in">require</span>(<span class="string">'./module3.js'</span>).a;   <span class="comment">//当引入的是sea下面的模块的时候，那么require执行完的结果就是exports</span></span><br><span class="line">	<span class="comment">//所以可以访问a</span></span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">		alert(a);<span class="comment">//我是模块3的变量</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	exports.show = show;</span><br><span class="line">	</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></span>
+
+此时你重新访问test2.html就可以看到弹出"我是模块3的变量"。
+
+最后提示，不管是在test.html还是test2.html中都要先引入sea.js这个文件。谢谢！</span>
+</code></pre>  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/模块开发/">模块开发</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/03/02/模块开发(seaJs)步骤/" data-title="模块开发步骤 | fengfaxia" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/02/26/数字比较/"  title="8种方式实现:一个数n,当n小于100就返回n，否则就返回100">
+ <strong>下一篇：</strong><br/> 
+ <span>8种方式实现:一个数n,当n小于100就返回n，否则就返回100
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-引入sea-js的库"><span class="toc-number">1.</span> <span class="toc-text">1.引入sea.js的库</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-如何变成模块？"><span class="toc-number">2.</span> <span class="toc-text">2.如何变成模块？</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="fengfaxia" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/demo/" title="demo">demo<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/js中的运动/" title="js中的运动">js中的运动<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/兼容性/" title="兼容性">兼容性<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/模块开发/" title="模块开发">模块开发<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔记/" title="笔记">笔记<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/问题总结/" title="问题总结">问题总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/高性能JavaScript/" title="高性能JavaScript">高性能JavaScript<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fengfaxia.github.io/" target="_blank" title="fengfaxia&#39;log">fengfaxia&#39;log</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="200" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=200&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=5448337646&verifier=9928f154&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m fengfaxia,love of learning <br/>
+			This is my blog,learn form each other.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5448337646" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/fengfaxia" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="fengfaxia">fengfaxia</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe6d1f421bbc9962127a50488f9ed37d1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
