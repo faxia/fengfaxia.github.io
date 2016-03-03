@@ -14,11 +14,11 @@
     <meta name="description" content="随着项目规模增大，团队人员增多，多人协作过程中命名冲突不可避免，虽然可以使用命 名空间来减少冲突发生，但是依然会发生，一旦发生了可以会让你很头疼。还有产品更新 换代块，模块之间相互依赖比较大，一旦某个文件名字改动或者添加了新文件件，手工修改 想想就知道是多么痛的领悟。因此模块开发变得十分重要。下面就来看看使用seaJs模块开发 框架的步骤吧！">
 <meta property="og:type" content="article">
 <meta property="og:title" content="模块开发步骤">
-<meta property="og:url" content="http://yoursite.com/2016/03/02/模块开发(seaJs)步骤/index.html">
+<meta property="og:url" content="http://yoursite.com/2016/03/03/模块开发(seaJs)步骤/index.html">
 <meta property="og:site_name" content="fengfaxia">
 <meta property="og:description" content="随着项目规模增大，团队人员增多，多人协作过程中命名冲突不可避免，虽然可以使用命 名空间来减少冲突发生，但是依然会发生，一旦发生了可以会让你很头疼。还有产品更新 换代块，模块之间相互依赖比较大，一旦某个文件名字改动或者添加了新文件件，手工修改 想想就知道是多么痛的领悟。因此模块开发变得十分重要。下面就来看看使用seaJs模块开发 框架的步骤吧！">
 <meta property="og:image" content="http://i11.tietuku.com/433c484aaa5f97b2.png">
-<meta property="og:updated_time" content="2016-03-02T07:48:02.874Z">
+<meta property="og:updated_time" content="2016-03-03T04:57:01.869Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="模块开发步骤">
 <meta name="twitter:description" content="随着项目规模增大，团队人员增多，多人协作过程中命名冲突不可避免，虽然可以使用命 名空间来减少冲突发生，但是依然会发生，一旦发生了可以会让你很头疼。还有产品更新 换代块，模块之间相互依赖比较大，一旦某个文件名字改动或者添加了新文件件，手工修改 想想就知道是多么痛的领悟。因此模块开发变得十分重要。下面就来看看使用seaJs模块开发 框架的步骤吧！">
@@ -81,14 +81,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/03/02/模块开发(seaJs)步骤/" title="模块开发步骤" itemprop="url">模块开发步骤</a>
+      <a href="/2016/03/03/模块开发(seaJs)步骤/" title="模块开发步骤" itemprop="url">模块开发步骤</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
 		
   <p class="article-time">
-    <time datetime="2016-03-02T07:48:02.874Z" itemprop="datePublished"> 发表于 2016-03-02</time>
+    <time datetime="2016-03-03T04:57:01.869Z" itemprop="datePublished"> 发表于 2016-03-03</time>
     
   </p>
 </header>
@@ -115,10 +115,10 @@
 
 这样可以有效的防止冲突并且成为seaJs下的一个模块。注意define(function(require,exports,module){});接受三个参数，
 并且三个参数的名字不可以随意修改
-</code></pre><h4 id="3-如何调用模块？">3.如何调用模块？</h4><pre><code>上面的模块已经是seaJs下的模块了，那么我们如何调用呢？确实，我也比较关心。答案是用exports和seajs.use你所看到的exports
+</code></pre><h4 id="3-如何调用模块？">3.如何调用模块？</h4><pre><code>上面的模块已经是seaJs下的模块了，那么我们如何调用呢？确实，我也比较关心。答案是用exports和seajs.use,你所看到的exports
 就是define函数里面的一个参数，是对外提供接口的对象，我们在define函数
 里面添加exports.show = show;此时module1.js中的代码清单如下：
-<span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span><span class="params">(require,exports,module)</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		alert(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	exports.show = show;</span><br><span class="line">	&#125;);</span><br></pre></td></tr></table></figure></span>
+<span class="comment"><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">define(<span class="function"><span class="keyword">function</span><span class="params">(require,exports,module)</span></span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		alert(<span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	exports.show = show;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></span>
 
 如果想在test.html中通过exports.show()调用，还的借助seajs.use('./js/module1.js',function(ex){});
 第一个参数是模块的地址(sea的默认根目录:sea.js这个文件,前面已经看过项目的结构,也就是sea文件。)，
@@ -174,7 +174,7 @@ test2.html文件(请引入sea.js文件),<span class="tag">&lt;<span class="title
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2016/03/02/模块开发(seaJs)步骤/" data-title="模块开发步骤 | fengfaxia" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2016/03/03/模块开发(seaJs)步骤/" data-title="模块开发步骤 | fengfaxia" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
