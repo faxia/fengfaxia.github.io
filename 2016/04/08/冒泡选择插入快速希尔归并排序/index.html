@@ -1,0 +1,496 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>冒泡/选择/插入/希尔/归并/快速排序 | fengfaxia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="fengfaxia">
+    
+
+    
+    <meta name="description" content="最近看了一下基本的数据结构，写了一下，下面把它罗列出来。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="冒泡/选择/插入/希尔/归并/快速排序">
+<meta property="og:url" content="http://yoursite.com/2016/04/08/冒泡选择插入快速希尔归并排序/index.html">
+<meta property="og:site_name" content="fengfaxia">
+<meta property="og:description" content="最近看了一下基本的数据结构，写了一下，下面把它罗列出来。">
+<meta property="og:image" content="http://7xrn7f.com1.z0.glb.clouddn.com/16-4-6/77905503.jpg">
+<meta property="og:updated_time" content="2016-04-08T14:20:31.418Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="冒泡/选择/插入/希尔/归并/快速排序">
+<meta name="twitter:description" content="最近看了一下基本的数据结构，写了一下，下面把它罗列出来。">
+
+    
+    <link rel="alternative" href="/atom.xml" title="fengfaxia" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="fengfaxia" title="fengfaxia"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="fengfaxia">fengfaxia</a></h1>
+				<h2 class="blog-motto">拥抱变化</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home | 主页</a></li>
+					
+						<li><a href="/archives">Archives | 文章</a></li>
+					
+						<li><a href="/about">About | 关于我</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/04/08/冒泡选择插入快速希尔归并排序/" title="冒泡/选择/插入/希尔/归并/快速排序" itemprop="url">冒泡/选择/插入/希尔/归并/快速排序</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="fengfaxia" target="_blank" itemprop="author">fengfaxia</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-08T14:20:31.418Z" itemprop="datePublished"> 发表于 2016-04-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目录</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#冒泡排序"><span class="toc-number">1.</span> <span class="toc-text">冒泡排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选择排序"><span class="toc-number">2.</span> <span class="toc-text">选择排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插入排序"><span class="toc-number">3.</span> <span class="toc-text">插入排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#希尔排序"><span class="toc-number">4.</span> <span class="toc-text">希尔排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#快速排序"><span class="toc-number">5.</span> <span class="toc-text">快速排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#归并排序"><span class="toc-number">6.</span> <span class="toc-text">归并排序</span></a></li></ol>
+		
+		</div>
+		
+		<blockquote>
+<p>最近看了一下基本的数据结构，写了一下，下面把它罗列出来。</p>
+</blockquote>
+ <a id="more"></a>
+<h3 id="冒泡排序">冒泡排序</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">bubbleSort</span><span class="params">(arr)</span> </span>&#123;</span><br><span class="line">  var temp;</span><br><span class="line">  var len = arr.length;</span><br><span class="line">  <span class="keyword">for</span>( var j=<span class="number">0</span>; j&lt;len-<span class="number">1</span>;j++ ) &#123;</span><br><span class="line">   </span><br><span class="line">    <span class="keyword">for</span>(var i=<span class="number">0</span>;i&lt;len-j-<span class="number">1</span>;i++) &#123;</span><br><span class="line">    </span><br><span class="line">      <span class="keyword">if</span>( arr[i] &gt; arr[i+<span class="number">1</span>] ) &#123;</span><br><span class="line">        temp = arr[i];</span><br><span class="line">        arr[i] = arr[i+<span class="number">1</span>];</span><br><span class="line">        arr[i+<span class="number">1</span>] = temp;</span><br><span class="line">        </span><br><span class="line">      &#125;      </span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  console.<span class="built_in">log</span>(arr);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">var arrSort = [<span class="number">9</span>,<span class="number">4</span>,<span class="number">7</span>,<span class="number">2</span>,<span class="number">5</span>];</span><br><span class="line"></span><br><span class="line">bubbleSort(arrSort);</span><br></pre></td></tr></table></figure>
+<h3 id="选择排序">选择排序</h3><p>从数组开头将查找，将第一个数与其他元素相比较，取最小值放数组第一位。<br>接着从第二位开始依次类推查找<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">selectSort</span><span class="params">(arr)</span> </span>&#123;</span><br><span class="line">  var min;</span><br><span class="line">  <span class="keyword">for</span>(var j=<span class="number">0</span>;j&lt;arr.length-<span class="number">2</span>;j++) &#123;<span class="comment">//倒数第二位</span></span><br><span class="line"></span><br><span class="line">    min = j;<span class="comment">//最小值索引</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(var i = j+<span class="number">1</span>;i&lt;arr.length-<span class="number">1</span>;i++) &#123;<span class="comment">//比较到倒数第一位</span></span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>( arr[min]&gt;arr[i] ) &#123;</span><br><span class="line"></span><br><span class="line">        min = i;<span class="comment">//更新最小值索引</span></span><br><span class="line"></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    swap(arr,min,j);<span class="comment">//将最小值与外循环里面的值互换</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">function <span class="title">swap</span><span class="params">(arr,index1,index2)</span> </span>&#123;</span><br><span class="line">  var temp = arr[index1];</span><br><span class="line">  arr[index1] = arr[index2];</span><br><span class="line">  arr[index2] = temp;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.<span class="built_in">log</span>(selectSort([<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">0</span>,<span class="number">9</span>]));</span><br></pre></td></tr></table></figure></p>
+<h3 id="插入排序">插入排序</h3><p>将待插入的数设为已排序的第一位,即[0]位。接着与排好序的数组进行比较<br>若大于该位置上的值，则插入到该位置之后。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">function <span class="title">insertSort</span><span class="params">(arr)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(var j = <span class="number">1</span>;j&lt;arr.length;j++) &#123;</span><br><span class="line">    </span><br><span class="line">    var temp = arr[j];</span><br><span class="line"></span><br><span class="line">    var i = j;<span class="comment">//如果没有进入while循环还是会用到i值</span></span><br><span class="line">    <span class="keyword">while</span>(i&gt;<span class="number">0</span> &amp;&amp; (arr[i-<span class="number">1</span>] &gt;=temp)) &#123;</span><br><span class="line">      arr[i] = arr[i-<span class="number">1</span>];</span><br><span class="line">      --i;</span><br><span class="line">    &#125;</span><br><span class="line">    arr[i] = temp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line">console.<span class="built_in">log</span>(insertSort([<span class="number">2</span>,<span class="number">1</span>,<span class="number">4</span>,<span class="number">0</span>,<span class="number">9</span>]));</span><br></pre></td></tr></table></figure></p>
+<h3 id="希尔排序">希尔排序</h3><p>遍历存有间隔值的数组,间隔相等的数进行相互比较，一次类推<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">function shellSort(arr,gap) &#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> <span class="keyword">g</span> = 0;<span class="keyword">g</span>&lt;gap.length;<span class="keyword">g</span>++) &#123;<span class="comment">//循环gap数组</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i=gap[<span class="keyword">g</span>];i&lt;arr.length;i++) &#123;<span class="comment">//对数组值进行进行比较</span></span><br><span class="line">      <span class="keyword">var</span> temp = arr[i];<span class="comment">//需要比较的值</span></span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">var</span> j=i;j&gt;=gap[<span class="keyword">g</span>] &amp;&amp; arr[j-gap[<span class="keyword">g</span>]]&gt;temp;j-=gap[<span class="keyword">g</span>]) &#123;</span><br><span class="line">      <span class="comment">//相隔gap[g]的值进行比较</span></span><br><span class="line">        arr[j] = arr[j-gap[<span class="keyword">g</span>]];</span><br><span class="line">      </span><br><span class="line">      &#125;</span><br><span class="line">      arr[j] = temp;</span><br><span class="line">    </span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> arr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> arr = [61,85,19,88,68,8,70,29];</span><br><span class="line"><span class="keyword">var</span> gap = [3,1];</span><br><span class="line">console.<span class="literal">log</span>(shellSort(arr,gap));</span><br></pre></td></tr></table></figure></p>
+<h3 id="快速排序">快速排序</h3><p>选取数组中的某个值作为基础值，比该值小的放在前面，比它大的放在后面，<br>不断重复该操作<br><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function <span class="built_in">quickSort</span>(arr) &#123;</span><br><span class="line">    <span class="keyword">var</span> len = arr.length</span><br><span class="line">　　<span class="keyword">if</span> (len &lt;= <span class="number">1</span>) &#123; <span class="keyword">return</span> arr; &#125;</span><br><span class="line">　　<span class="keyword">var</span> pivotIndex = <span class="type">Math</span>.floor(len / <span class="number">2</span>);</span><br><span class="line">　　<span class="keyword">var</span> pivot = arr.splice(pivotIndex, <span class="number">1</span>)[<span class="number">0</span>];</span><br><span class="line">　　<span class="keyword">var</span> <span class="keyword">left</span> = [];</span><br><span class="line">　　<span class="keyword">var</span> <span class="keyword">right</span> = [];</span><br><span class="line">　　<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; len; i++)&#123;</span><br><span class="line">　　　　<span class="keyword">if</span> (arr[i] &lt; pivot) &#123;</span><br><span class="line">　　　　　　<span class="keyword">left</span>.push(arr[i]);</span><br><span class="line">　　　　&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">　　　　　　<span class="keyword">right</span>.push(arr[i]);</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　&#125;</span><br><span class="line">　　<span class="keyword">return</span> <span class="built_in">quickSort</span>(<span class="keyword">left</span>).concat([pivot], <span class="built_in">quickSort</span>(<span class="keyword">right</span>));</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">var</span> array = [<span class="number">20</span>,<span class="number">30</span>,<span class="number">1</span>,<span class="number">4</span>];</span><br><span class="line">console.log(qSort(array));</span><br></pre></td></tr></table></figure></p>
+<h3 id="归并排序">归并排序</h3><p>相邻两个值一组进行比较，然后相邻的两组之间接着比较<br><figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">function mergeSort(arr) &#123;</span><br><span class="line">  <span class="keyword">if</span>(arr.length == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> arr;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">var</span> middle = <span class="type">Math</span>.floor(arr.length/<span class="number">2</span>);</span><br><span class="line">  <span class="keyword">var</span> left = arr.slice(<span class="number">0</span>,middle);</span><br><span class="line">  <span class="keyword">var</span> right = arr.slice(middle);</span><br><span class="line">  <span class="keyword">return</span> merge(mergeSort(left),mergeSort(right));</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function merge(left,right) &#123;</span><br><span class="line">    <span class="keyword">var</span> <span class="literal">result</span> = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(left.length&gt;<span class="number">0</span> &amp;&amp; right.length&gt;<span class="number">0</span>) &#123;</span><br><span class="line">      <span class="keyword">if</span>(left[<span class="number">0</span>] &lt; right[<span class="number">0</span>]) &#123;</span><br><span class="line">        <span class="literal">result</span>.push(left.shift());</span><br><span class="line">      &#125; <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="literal">result</span>.push(right.shift());</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">result</span>.concat(left).concat(right);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> arr = [<span class="number">6</span>,<span class="number">10</span>,<span class="number">1</span>,<span class="number">9</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">2</span>,<span class="number">7</span>,<span class="number">3</span>,<span class="number">5</span>];</span><br><span class="line">  console.log(mergeSort(arr));</span><br></pre></td></tr></table></figure></p>
+<p>看完上面的几种基本的排序算法之后，那我们来看一下时间复制度和空间复杂度<br>嘘。。。我是盗来的图啦<br><img src="http://7xrn7f.com1.z0.glb.clouddn.com/16-4-6/77905503.jpg" alt="排序的空间复杂度和时间复杂度比较"></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/算法/">算法</a>
+</div>
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/04/08/冒泡选择插入快速希尔归并排序/" data-title="冒泡/选择/插入/希尔/归并/快速排序 | fengfaxia" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/04/06/tween算法及应用/"  title="tween算法及应用——原生时间版运动">
+ <strong>下一篇：</strong><br/> 
+ <span>tween算法及应用——原生时间版运动
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目录</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#冒泡排序"><span class="toc-number">1.</span> <span class="toc-text">冒泡排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选择排序"><span class="toc-number">2.</span> <span class="toc-text">选择排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#插入排序"><span class="toc-number">3.</span> <span class="toc-text">插入排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#希尔排序"><span class="toc-number">4.</span> <span class="toc-text">希尔排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#快速排序"><span class="toc-number">5.</span> <span class="toc-text">快速排序</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#归并排序"><span class="toc-number">6.</span> <span class="toc-text">归并排序</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+<div class="github-card">
+<p class="asidetitle">Github 名片</p>
+<div class="github-card" data-github="fengfaxia" data-width="220" data-height="119" data-theme="medium">
+<script type="text/javascript" src="//cdn.jsdelivr.net/github-cards/latest/widget.js" ></script>
+</div>
+  </div>
+
+
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">分类</p>
+		<ul>
+		
+		  
+			<li><a href="/categories/Git/" title="Git">Git<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/demo/" title="demo">demo<sup>3</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/js中的运动/" title="js中的运动">js中的运动<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/兼容性/" title="兼容性">兼容性<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/模块开发/" title="模块开发">模块开发<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/笔记/" title="笔记">笔记<sup>4</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/算法/" title="算法">算法<sup>2</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/问题总结/" title="问题总结">问题总结<sup>1</sup></a></li>
+		  
+		
+		  
+			<li><a href="/categories/高性能JavaScript/" title="高性能JavaScript">高性能JavaScript<sup>2</sup></a></li>
+		  
+		
+		</ul>
+</div>
+
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://coderq.com" target="_blank" title="一个面向程序员交流分享的新一代社区">码农圈</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://fengfaxia.github.io/" target="_blank" title="fengfaxia&#39;log">fengfaxia&#39;log</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="200" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=200&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=5448337646&verifier=9928f154&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m fengfaxia,love of learning <br/>
+			This is my blog,learn form each other.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/5448337646" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		<a href="https://github.com/fengfaxia" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="fengfaxia">fengfaxia</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe6d1f421bbc9962127a50488f9ed37d1' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
